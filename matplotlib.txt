@@ -1,0 +1,59 @@
+Multiple Legends on the Same Axes
+#################################
+# Add first legend:  only labeled data is included
+leg1 = ax.legend(loc='lower left')
+# Add second legend for the maxes and mins.
+# leg1 will be removed from figure
+leg2 = ax.legend([maxline,minline],['max','min'], loc='upper right')
+# Manually add the first legend back
+ax.add_artist(leg1)
+
+
+Change the spacing between ticks
+################################
+import matplotlib.ticker as ticker
+
+ax = plt.axes()
+ax.xaxis.set_major_locator(ticker.MultipleLocator(5))
+ax.xaxis.set_minor_locator(ticker.MultipleLocator(1))
+
+
+Dark Background
+################
+plt.style.use('dark_background')
+
+
+Another way of doing subplots
+#############################
+
+plt.subplot(2, 1, 1)
+plt.plot(x, powerlaw(x, amp, index))     # Fit
+plt.errorbar(x, y, yerr=yerr, fmt='k.')  # Data
+plt.text(5, 6.5, 'Ampli = %5.2f +/- %5.2f' % (amp, ampErr))
+plt.text(5, 5.5, 'Index = %5.2f +/- %5.2f' % (index, indexErr))
+plt.title('Best Fit Power Law')
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.xlim(1, 11)
+
+plt.subplot(2, 1, 2)
+plt.loglog(x, powerlaw(x, amp, index))
+plt.errorbar(x, y, yerr=yerr, fmt='k.')  # Data
+plt.xlabel('X (log scale)')
+plt.ylabel('Y (log scale)')
+plt.xlim(1.0, 11)
+
+
+Simple Plot
+###########
+
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
+
+fig, ax = plt.subplots()
+x = np.arange(0.0, 10.0, 0.01)
+
+for idx in np.arange(0.0, 2.0, 0.2):
+    y = x**idx
+    ax.plot(x, y)

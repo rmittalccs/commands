@@ -1,0 +1,20 @@
+( https://github.com/SelfControlApp/selfcontrol/wiki/Tweaking-Max-Block-Length-and-Block-Length-Interval )
+
+Tweaking Max Block Length and Block Length Interval
+Steve Lambert edited this page on May 25, 2018 · 5 revisions
+
+Read this closely. If you do it wrong, SelfControl will not launch.
+
+To adjust the maximum block time and interval on the sliders, just open Terminal.app in Applications --> Utilities, then enter the following two commands (substituting the words in brackets with numbers). Press enter after each line:
+
+defaults write org.eyebeam.SelfControl MaxBlockLength -int [maximum block length in minutes]
+defaults write org.eyebeam.SelfControl BlockLengthInterval -int [block length interval in minutes]
+
+So, for example, to change it to a month-long maximum block with intervals at each day, you could use:
+
+defaults write org.eyebeam.SelfControl MaxBlockLength -int 43200
+defaults write org.eyebeam.SelfControl BlockLengthInterval -int 1440
+
+If you mess something up, use this Terminal command (while SelfControl is closed) to reset these settings:
+
+defaults delete org.eyebeam.SelfControl

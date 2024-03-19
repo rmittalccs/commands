@@ -1,0 +1,20 @@
+list dir
+#########
+
+1. Using PyArrow
+
+import os
+import pyarrow as pa
+
+fs = pa.hdfs.connect()
+path = "/teams/DDG/"
+fs.ls(path)
+
+2. Using subprocess
+
+from subprocess import Popen, PIPE
+hdfs_path = '/teams/DDG/'
+process = Popen(f'hdfs dfs -ls -h {hdfs_path}', shell=True, stdout=PIPE, stderr=PIPE)
+std_out, std_err = process.communicate()
+#files = [fn.split(' ')[-1].split('/')[-1] for fn in std_out.decode().readlines()[1:]][:-1]
+std_out

@@ -1,0 +1,29 @@
+##############################
+Replace new line with a string
+##############################
+
+M-x replace-string
+C-q C-j
+RET
+RET
+
+
+###############################
+##  Create emacs highlights  ##
+###############################
+
+Control-x ( 
+
+blah blah blah
+
+Control-x )
+
+Alt-x name-last-kbd-macro
+
+Enter ; Give name
+
+Open ~/.emacs ; Go to the end
+
+Alt-x insert-kbd-macro
+
+Enter ; Give name

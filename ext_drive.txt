@@ -1,0 +1,3 @@
+diskutil list
+diskutil info disk_2
+diskutil eject disk2

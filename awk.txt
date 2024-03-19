@@ -1,0 +1,1 @@
+ fdump HIFLUGCS_Core_Properties.fits prhead=no STDOUT page=no pagewidth=160 columns="246 247 248 249 250" rows=- showunit=no showcol=no | awk '{printf"%6.6f %6.6f %6.6f %6.6f %6.6f\n",$2, $3, $4, $5, $6}' > ~/clusters/Papers/paper-I/rlum.txt

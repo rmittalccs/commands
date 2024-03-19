@@ -1,0 +1,210 @@
+CREAT A TABLE
+#############
+DECLARE @ListOWeekDays TABLE(DyNumber INT,DayAbb VARCHAR(40) , WeekName VARCHAR(40))
+
+INSERT INTO @ListOWeekDays
+VALUES
+(1,'Mon','Monday')  ,
+(2,'Tue','Tuesday') ,
+(3,'Wed','Wednesday') ,
+(4,'Thu','Thursday'),
+(5,'Fri','Friday'),
+(6,'Sat','Saturday'),
+(7,'Sun','Sunday')
+SELECT * FROM @ListOWeekDays
+
+
+DRILL (APP)
+###########
+SELECT *,
+CASE
+    when Produkt_Code in ('1293695', '803318', '1293680') THEN  'Radsaetze'
+    when ISNUMERIC(substring(Produkt_Code, 1, 1)) = 1 THEN 'Material'
+    when ISNUMERIC(substring(Produkt_Code, 1, 1)) <> 1 THEN 'Arbeit'
+    ELSE 'NULL'
+    END as Produkt_Type
+    FROM
+	(SELECT YEAR(Datum_Abrechnung) as Datum_Abrechnung_Jahr, *
+	FROM hdfs.`/data/cargo/SAP_ISI/merged/nonoverlap/s927`) AS x
+    where x.Datum_Abrechnung_Jahr in (2017, 2018, 2019, 2020, 2021)
+LIMIT 10
+
+
+LEAD, PARTITION OVER, ORDER BY
+###############################
+
+https://docs.dremio.com/sql-reference/sql-functions/analytic/
+https://www.sqlservertutorial.net/sql-server-window-functions/sql-server-lead-function/
+https://stackoverflow.com/questions/38506252/getting-the-first-and-last-row-using-row-number-and-partition-by
+
+SELECT 
+    DISTINCT uic, bauart, gattung,
+    min(Datum_Stand) over(partition by uic, bauart, gattung), max(Datum_Stand) over(partition by uic, bauart, gattung)
+FROM 
+    DDG.waggon_datumstand
+
+
+
+CREATE/REPLACE FILE
+###################
+REPLACE VDS DDG.SAP_ISI.s941 as 
+SELECT * FROM AIC."SAP_ISI"."dahu_robotics_combined".recurring."s941_nonoverlap"
+
+CREATE VDS DDG.waggons as 
+SELECT DISTINCT regexp_replace(Fahrzeugnummer, '-', '') AS uic, Bauart as bauart, Gattung as gattung FROM  "RAM_LCC".WIS."Gueterwagenbestand_wl_MWTGWBPA"
+
+This is what is being used:
+---------------------------
+
+CREATE VDS DDG.waggon as
+WITH cte AS
+(
+    SELECT DISTINCT regexp_replace(Fahrzeugnummer, '-', '') AS uic, Bauart as bauart, LOWER(REPLACE(REPLACE(LTRIM(RTRIM(Gattung)), ' ', ''), '-', '')) as gattung, Datum_Stand 
+    FROM  "RAM_LCC".WIS."Gueterwagenbestand_wl_MWTGWBPA"
+)
+SELECT 
+    DISTINCT uic, bauart, gattung,
+    min(Datum_Stand) as start_date, max(Datum_Stand) as end_date
+FROM 
+    cte
+group by
+    uic, bauart, gattung
+
+
+CREATE VDS DDG.waggon as 
+SELECT DISTINCT regexp_replace(Fahrzeugnummer, '-', '') AS uic, Bauart as bauart, LOWER(REPLACE(REPLACE(LTRIM(RTRIM(Gattung)), ' ', ''), '-', '')) as gattung FROM  "RAM_LCC".WIS."Gueterwagenbestand_wl_MWTGWBPA"
+
+SELECT DISTINCT regexp_replace(Fahrzeugnummer, '-', '') AS uic, Bauart as bauart, REPLACE(LTRIM(RTRIM(Gattung)), ' ', '-') as gattung FROM  "RAM_LCC".WIS."Gueterwagenbestand_wl_MWTGWBPA"
+
+SELECT DISTINCT regexp_replace(Fahrzeugnummer, '-', '') AS uic, Bauart as bauart, REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(Gattung)), '  ', ''), ' ', ''), '-', '') as gattung FROM  "RAM_LCC".WIS."Gueterwagenbestand_wl_MWTGWBPA"
+
+touchpoint
+###########
+
+SELECT * FROM DDG.touchpoints
+where actiondt >= to_timestamp('2020-12-01', 'yyyy-mm-dd') and actiondt < to_timestamp('2020-12-01', 'yyyy-mm-dd') +  INTERVAL '7' DAY
+
+SELECT * FROM DDG.touchpoints
+where actiondt >= to_timestamp('2020-12-01', 'yyyy-mm-dd') +  INTERVAL '7' DAY 
+
+
+Krankenblatt
+############
+
+SELECT regexp_replace(Aktuelle_Fahrzeugnummer, '-', '') AS uic, Bauart, Erfassungsdatum, Erledigungsdatum, Schadcode, Schadcodetext FROM ziis_ihd_kblatt_ba
+
+
+Join
+****
+
+SELECT a.* 
+FROM DDG.SAP_ISI.s927_ba AS a 
+INNER JOIN  DDG.SAP_ISI.s941 AS b
+ON a.Fahrzeugnummer = b.Fahrzeugnummer AND
+a.Werk_Code = b.Werk_Code AND
+a.Produkt_SAP = b.Produkt_SAP ;
+
+SELECT tb2.* FROM "Abgleich_KB_Krankenblatt_DaP_reformat.csv" AS tb1
+INNER JOIN DDG.touchpoints AS tb2
+ON tb1.Touchpoint=substr(tb2.Touchpoint,14) 
+-- substr(tb2.Touchpoint,14)
+
+
+SELECT A AS Touchpoint, B AS Durchfahrt, C AS uic, D AS Ort_Gate, E AS Wagennummer_Krank, F AS IH_Werk, G AS IH_Werk_Bez, H AS Status_Schaden, I AS Erfassungsdatum, J AS Erledigungsdatum, K AS Schadcode, L AS Schadcode_Text, M AS "Tätigkeit", N AS Fehlerklasse
+FROM "Jupyter DDG".data."Abgleich_KB_Krankenblatt_DaP_reformat.csv"
+
+
+GROUP BY
+########
+
+Example:
+SELECT camera, COUNT(*) 
+FROM touchpoints 
+GROUP BY camera;
+
+Example:
+select count(*), business_date from CBM.IoT.cm."br185_railnova_sensor" where business_date >= to_date('2019-08-22', 'yyyy-mm-dd') group by business_date order by business_date
+
+
+
+SELECT TEXT CONTAINING
+######################
+
+SELECT Baureihe, Loknummer, Fahrzeugnummer, Auftraggeber_SAP, Werk_SAP, Art_technisches_Objekt, IH_Stufe_SAP, Fahrzeug_ext_SAP, Verkaufsbeleg_SAP, Produkt_Code, Produkt_Name, Produkt_Bezeichnung_SAP, Monat_SAP, Nettowert, "Nettowert_Währung", Menge, Menge_Einheit, Datum_Bestellung, Datum_Abrechnung
+FROM CBM.SAP.SAP_ISI_S924_BR_Rechnungsdaten
+WHERE regexp_like(Fahrzeugnummer, '.*?\Q9280\E.*?')
+
+SELECT DISTINCT gattung FROM waggon
+where gattung LIKE '%Eaos%' 
+  and gattung LIKE '%x%';
+
+
+SELECT TIMERANGE
+################
+
+
+SELECT loknummer, time_stamp, zsg1n_m_hs_ein, hbu1_iw_frequenz, hbu2_iw_frequenz, iw_kilometerstand_nfs, zsg1n_iw_vist, main_battery
+FROM (
+  SELECT loknummer, time_stamp, zsg1n_m_hs_ein, hbu1_iw_frequenz, hbu2_iw_frequenz, iw_kilometerstand_nfs, zsg1n_iw_vist, main_battery
+  FROM CBM.IoT.cm_monitor.br185_sensor
+  WHERE 185251 = loknummer AND time_stamp >= to_timestamp('2017-08-18 18:30:00', 'yyyy-mm-dd HH24:MI:SS') AND time_stamp < to_timestamp('2017-08-19 18:40:00', 'yyyy-mm-dd HH24:MI:SS')
+) nested_0
+ORDER BY time_stamp ASC
+
+
+SELECT loknummer, time_stamp, zsg1n_m_hs_ein, hbu1_iw_frequenz, hbu2_iw_frequenz, iw_kilometerstand_nfs, zsg1n_iw_vist
+FROM (
+  SELECT loknummer, time_stamp, zsg1n_m_hs_ein, hbu1_iw_frequenz, hbu2_iw_frequenz, iw_kilometerstand_nfs, zsg1n_iw_vist
+  FROM CBM.IoT.cm_monitor.br185_sensor AS br185_sensor
+   WHERE 185004 <= loknummer AND 185012 > loknummer
+) nested_0
+ WHERE zsg1n_m_hs_ein IS NOT null AND time_stamp >= to_timestamp('2019-01-19', 'yyyy-mm-dd') AND time_stamp < to_timestamp('2019-02-19', 'yyyy-mm-dd')
+
+
+
+COUNT ROWS
+############
+
+SELECT COUNT(*) FROM(
+SELECT 
+DISTINCT loknummer
+FROM CBM.IoT.cm.br185_railnova_sensor AS br185_railnova_sensor
+)
+
+SELECT count(*) 
+FROM br185_sensor
+
+SELECT count (*) FROM (
+SELECT loknummer, time_stamp, zsg1n_m_hs_ein, hbu1_iw_frequenz, hbu2_iw_frequenz, iw_kilometerstand_nfs, zsg1n_iw_vist, main_battery
+FROM "@RupalMittal".try1
+ WHERE '2019-06-03 00:00:00' <= time_stamp AND '2019-06-19 00:00:00' > time_stamp
+)
+
+
+The SQL WHERE IS NULL syntax
+#############################
+
+The general syntax is:
+SELECT column-names
+  FROM table-name
+ WHERE column-name IS NULL
+
+The general not null syntax is:
+SELECT column-names
+  FROM table-name
+  WHERE column-name IS NOT NULL
+
+
+SELECT
+#######
+
+SELECT loknummer, time_stamp, zsg1n_m_hs_ein, hbu1_iw_frequenz, hbu2_iw_frequenz, iw_kilometerstand_nfs, zsg1n_iw_vist, main_battery
+FROM CBM.IoT.cm_monitor.br185_sensor AS br185_sensor
+ WHERE loknummer = 185004
+ORDER BY loknummer ASC
+
+SELECT loknummer, time_stamp, zsg1n_m_hs_ein, hbu1_iw_frequenz, hbu2_iw_frequenz, iw_kilometerstand_nfs, zsg1n_iw_vist, main_battery
+FROM CBM.IoT.cm_monitor.br185_sensor AS br185_sensor
+ORDER BY loknummer ASC, time_stamp ASC
+
+

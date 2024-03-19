@@ -1,0 +1,5 @@
+Jinja Filter in Chart Explorer (Metric)
+----------------------------------------
+
+{{ filter_values('treemap_aggregation')[0] }}{{ "(" + filter_values('treemap_metric')[0] + ")"}}
+

@@ -1,0 +1,30 @@
+Tensors
+########
+
+outputs.eval(session=tf.compat.v1.Session())
+
+If in eagerly mode, then the following syntax is will print out the
+tensor
+
+https://www.tensorflow.org/api_docs/python/tf/print
+
+"None when executing eagerly. During graph tracing this returns a TF
+operator that prints the specified inputs in the specified output
+stream or logging level. This operator will be automatically executed
+except inside of tf.compat.v1 graphs and sessions."
+
+
+Eagerly
+#######
+
+tf.executing_eagerly()
+>>> True / False
+
+"Run this tf.enable_eager_execution() and then when you try
+tf.executing_eagerly() it should give True. After this you can use
+something.numpy() to view the values."
+
+"I've found that my issue clears up after inserting
+tf.compat.v1.enable_eager_execution() at the top of my script (very
+similar to what previous posters have said, but this works for TF
+2.0).."

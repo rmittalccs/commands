@@ -1,0 +1,214 @@
+########################################################
+Check what credentials git is using for a particular url
+#########################################################
+echo url=https://github.com | git credential fill | less
+
+
+#################
+Add a new remote
+#################
+git remote add origin_github https://github.com/rmittalDB/arpae-astep.git
+
+
+###################################
+Push the repository to a new remote
+###################################
+
+git remote add origin-dbeco https://DB-ECO-NA@dev.azure.com/DB-ECO-NA/LMMS/_git/LMMS
+git push -u origin-dbeco --all
+
+
+##############################################################
+Follow the steps below to rename a Local and Remote Git Branch
+##############################################################
+
+Start by switching to the local branch which you want to rename:
+> git checkout <old_name>
+
+Rename the local branch by typing:
+> git branch -m <new_name>
+
+At this point, you have renamed the local branch.
+
+If you’ve already pushed the <old_name> branch to the remote repository , perform the next steps to rename the remote branch.
+
+Push the <new_name> local branch and reset the upstream branch:
+> git push origin -u <new_name>
+
+Delete the <old_name> remote branch:
+> git push origin --delete <old_name>
+
+That’s it. You have successfully renamed the local and remote Git branch.
+
+Conclusion: Branches are part of the software development process and one of the most powerful features in Git. Branches are essentially pointers to a certain commit.
+
+
+
+
+
+#####################################
+Copy file from one branch to another
+####################################
+(copy file from aic branch to dev): https://remarkablemark.org/blog/2016/11/04/copy-files-from-git-branch/
+git checkout dev
+git checkout aic ../Notebooks/prepare_file_nifi.ipynb
+git commit -am "added prepare_file_nifi"
+git push
+
+
+###########################
+Change the last git message
+###########################
+git commit --amend -m "New commit message."
+
+#########################################
+Introducing repo2 as a subdir into repo1
+#########################################
+git clone fencegan fencegan_tmp
+cd fencegan_tmp
+git remote rm origin
+git filter-branch --tree-filter 'mkdir -p ~/tmp; mv * ~/tmp/; mkdir fencegan; mv ~/tmp/* fencegan/' --tag-name-filter cat --prune-empty -- --all
+git branch -m dev dev_fgan
+git remote add origin git@ssh.git.tech.rz.db.de:house-of-ai/fahrzeug_instandhaltung_kamerabefundung_cargo.git
+git fetch origin dev
+git checkout dev_fgan
+git merge dev --allow-unrelated-histories
+
+#At this point there may or may not be conflicts. I got a conflict for .gitignore, so fix the conflicts:
+nano .gitignore
+git add .gitignore
+git commit 
+
+#Lastly push the new branch from repo2 (fencegan -> dev_fgan) to repo1
+git push -u origin dev_fgan
+
+
+###############
+Pip install git
+###############
+pip install git+[link]
+
+
+#######################################
+List the files committed but not pushed
+#######################################
+
+git log --stat
+
+
+###############
+Undo the commit
+###############
+
+git reset --soft HEAD~1
+
+
+#############
+Sketch a Tree
+#############
+
+git log --all --decorate --oneline --graph
+
+
+
+#################################
+List file being tracked in branch
+#################################
+
+git ls-tree -r branch-name --name-only
+
+
+#######################################
+Create new branch and push it to origin
+#######################################
+
+git checkout -b <branch>
+git push -u origin <branch>
+
+
+####################################
+Delete a branch locally and remotely 
+####################################
+
+(locally)
+git branch -d rupal_aic
+(remotely)
+git push origin --delete rupal_aic
+
+
+
+###################################
+git branch exploring and switching
+###################################
+
+git branch -a
+git checkout branch-name
+
+
+###############################
+Set emacs as the default editor
+###############################
+
+git config --global core.editor "emacs -nw"
+
+
+
+
+##################
+Git Un-add a file
+##################
+
+(assuming it has not been committed yet)
+
+git add
+git reset figures/SN2701565.pdf
+
+
+######################
+Undo changes to a file
+######################
+
+git checkout file
+
+
+
+#########################################
+Resetting git to the version prior to a
+particular commit
+#########################################
+
+
+So let's start with finding the right commit. You can see the commits
+which have made modifications to given file(s) very easily:
+
+git log path/to/file
+
+If your commit messages aren't good enough, and you need to see what
+was done to the file in each commit, use the -p/--patch option:
+
+git log -p path/to/file
+
+Or, if you prefer the graphical view of gitk
+
+gitk path/to/file
+
+You can also do this once you've started gitk through the view menu;
+one of the options for a view is a list of paths to include.
+
+Either way, you'll be able to find the SHA1 (hash) of the commit with
+the version of the file you want. Now, all you have to do is this:
+
+# get the version of the file from the given commit
+git checkout <commit> path/to/file
+
+# and commit this modification
+git commit
+
+(The checkout command first reads the file into the index, then copies
+it into the work tree, so there's no need to use git add to add it to
+the index in preparation for committing.)
+
+If your file may not have a simple history (e.g. renames and copies),
+see VonC's excellent comment. git can be directed to search more
+carefully for such things, at the expense of speed. If you're
+confident the history's simple, you needn't bother.

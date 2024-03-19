@@ -1,0 +1,9 @@
+### Total Size ###
+aws s3 ls s3://$bucket/ --human-readable --summarize
+
+### Search for a file ###
+aws s3 ls s3://BUCKET-NAME/ --recursive | grep FILE-NAME.TXT
+
+### Copy files ###
+aws s3 cp s3://$BUCKET/models/image_segmentation/rungen/results/model_ex4_augmentation_p0_1/ . --recursive
+

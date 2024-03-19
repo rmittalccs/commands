@@ -1,0 +1,50 @@
+#-------------------------------------------------------------------
+Setting up VNC between one machine (MAC) to another (office) machine
+#-------------------------------------------------------------------
+
+Step 1
+Download Chicken of the VNC on MAC.
+
+Step 2
+ssh to office machine
+
+Step 3
+execute in your homedir 'vncpasswd' 
+-> Set a passwd
+-> This should create .vnc in your homedir. Note 
+that vncpasswd is usually in /cis/bin (for eg).
+-> This should also create a file called xstartup
+which looks like this:
+
+#########
+#!/bin/sh
+
+[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
+xsetroot -solid grey
+#xterm -geometry 80x24+10+10 -ls -title "$VNCDESKTOP Desktop" &
+gnome-session &
+#########
+
+#--------------------------------------
+You are set to run VNC. Now The actual 
+commands that you have to run each time
+#--------------------------------------
+
+Step 1
+execute 'vncserver -geometry 1400x1040' [max. size]
+-> This will return a message that says something like:
+
+##########
+New 'X' desktop is borman:3
+
+Starting applications specified in /cis/staff/rumpci/.vnc/xstartup
+Log file is /cis/staff/rumpci/.vnc/borman:3.log
+##########
+
+Step 2
+Open a new connection in the Chicken of the VNC. 
+-> Put borman.cis.rit.edu as the hostname (or just borman depending on where you are)
+-> Display is 3 (borman:3.log)
+-> Give the same passwd that you used to set VNC
+ 
+Done!

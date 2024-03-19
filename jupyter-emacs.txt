@@ -1,0 +1,4 @@
+copy: alt + w
+paste: strg + y
+
+undo: strg + x, release, u

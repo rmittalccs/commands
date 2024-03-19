@@ -1,0 +1,15 @@
+(aic_python37) rupalmittal@aiccrgoabnnh01:~/git/fahrzeug_instandhaltung_sbm_radsaetze$ git push
+Enter passphrase for key '/home/rupalmittal/.ssh/id_rsa':
+Counting objects: 356, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (246/246), done.
+Writing objects: 100% (356/356), 495.54 KiB | 13.39 MiB/s, done.
+Total 356 (delta 219), reused 143 (delta 91)
+remote: Resolving deltas: 100% (219/219), completed with 5 local objects.
+remote:
+remote: To create a merge request for patch-1, visit:
+remote:   https://git.tech.rz.db.de/house-of-ai/fahrzeug_instandhaltung_sbm_radsaetze/-/merge_requests/new?merge_request%5Bsource_branch%5D=patch-1
+remote:
+To ssh.git.tech.rz.db.de:house-of-ai/fahrzeug_instandhaltung_sbm_radsaetze.git
+   a4ac2f6..16f7411  patch-1 -> patch-1
+   

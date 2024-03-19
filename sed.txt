@@ -1,0 +1,25 @@
+Merging columns from different files
+------------------------------------
+
+Try:
+sed -n '1,1 p' test > test_new ; sed -n '2,$ p' test >> test_new
+sed -n '2,$ p' test | awk '{printf"%le      %le      %le       \n",$6, $7, $8}' >> test_new
+
+This works:
+sed -n '1,1 p' test > test_new ; sed -n '2,$ p' test >> test1 ; sed -n '2,$ p' test | awk '{printf"%le      %le      %le       \n",$6, $7, $8}' > test2 ; paste test1 test2 >> test_new 
+
+For A2199:
+
+file1
+1   2          3      4        5    6      7      8
+Age Extinction HSTFUV GALEXNUV F555 2MASS1 2MASS2 2MASS3
+
+file2
+1   2          3    4   
+Age Extinction F435 F814
+
+newfile
+1   2          3      4    5    6    7      8      9
+Age Extinction HSTFUV F435 F555 F814 2MASS1 2MASS2 2MASS3
+
+sed -n '1,1 p' file1 > newfile1 ; sed -n '2,$ p' file1 | awk '{printf"%lf      %lf      %le       \n", $1, $2, $3}' >> newfile1 ; sed -n '2,$ p' file2 | awk '{printf"%le      \n", $3}' > newfile2 ; sed -n '2,$ p' file1 | awk '{printf"%le      \n", $5}' >> newfile3 ; sed -n '2,$ p' file2 | awk '{printf"%le      \n", $4}' >> newfile4 ; sed -n '2,$ p' file1 | awk '{printf"%le      %le      %le      \n", $6, $7, $8}' >> newfile5 ; paste newfile1 newfile2 newfile3 newfile4 newfile5 newfile ; \rm newfile1 newfile2 newfile3 newfile4 newfile5

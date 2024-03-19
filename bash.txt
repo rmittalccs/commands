@@ -1,0 +1,11 @@
+Accessing Python variables from a Jupyter cell
+##############################################
+
+%%bash -s "$myPythonVar" "$myOtherVar"
+echo "This bash script knows about $1 and $2"
+
+
+Replace string in files
+#######################
+
+for i in `ls bces*`; do sed -i 's/15000/10000/g' $i ; done

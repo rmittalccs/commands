@@ -1,0 +1,45 @@
+Strip audio from mp4
+####################
+
+If what you want is to really extract the audio, you can simply "copy"
+the audio track to a file using -acodec copy.
+
+ffmpeg -i videofile.mp4 -vn -acodec copy audiofile.mp3
+
+Note that in this case, the audiofile format has to be consistent with
+what the container has (i.e. if the audio is AAC format, you have to
+say audiofile.aac). You can use the ffprobe command to see which codec
+you have, this may provide some information:
+
+ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -print_format csv=p=0 "videofile.mp4"
+
+
+Strip video from mp4
+####################
+
+ffmpeg -i example.mkv -c copy -an example-nosound.mkv
+
+
+Crop a movie in time
+####################
+
+ffmpeg -i source.mp4 -ss 00:00:00 -t 00:00:00 -vcodec copy -acodec copy splice.mp4
+
+Rotate a Movie
+##############
+
+(90 degrees)
+ffmpeg -i in.mov -vf "transpose=1" out.mov
+(180 degrees)
+ffmpeg -i in.mov -vf "transpose=2,transpose=2" out.mov
+
+Convert mp4 to mp3
+##################
+
+#!/bin/bash
+for f in *.mp4
+do
+    name=`echo "$f" | sed -e "s/.mp4$//g"`
+    ffmpeg -i "$f" -vn -ar 44100 -ac 2 -ab 192k -f mp3 "$name.mp3"
+done
+

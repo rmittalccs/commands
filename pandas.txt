@@ -1,0 +1,494 @@
+Drop Multiple-Index Data
+########################
+df_tmp = df_tmp.drop(index=(lat_next, lon_next, pt_idx))
+
+
+Distance Matrix
+################
+def distance_matrix(lat, lon, tag):
+    n_tic = time.process_time()
+    lat_lon = pd.DataFrame({'LATITUDE': lat, 'LONGITUDE': lon})
+    distances = pdist(lat_lon.values, metric=dist)
+    points = [f'point_{i}' for i in range(1, len(lat_lon) + 1)]
+    result = pd.DataFrame(squareform(distances), columns=points, index=points)
+    n_toc = time.process_time()
+    result = pd.DataFrame(squareform(distances), columns=points, index=[np.full(len(lat), tag), lat, lon, points])
+    proc_time = n_toc-n_tic
+    return(result, proc_time)
+
+
+Intersection of DataFrames
+##########################
+dfs = [df0, df1, df2, dfN]
+df_final = reduce(lambda left,right: pd.merge(left,right,on='DateTime'), dfs)
+
+Check if file exists on HDFS
+############################
+(ret, out, err)= util_spark.run_cmd(['hdfs', 'dfs', '-test', '-e', '%s/%s' %(path, filename)])
+if ret!=0:
+    print("### File does not exist %s/%s" %(path, filename))
+
+
+Abbreviations and Duplicates
+############################
+m = df_s927['Werk_kurz'].duplicated(keep=False) # Mask for all duplicated values
+
+df_s927.loc[m, 'Werk_kurz'] += (" " + df_s927.loc[m, "Werk_SAP"].str[5:10])
+
+
+Groupby and list another column
+###############################
+df1 = df.groupby('a')['b'].apply(list).reset_index(name='new')
+
+
+Sorting of Columns
+##################
+# Formatting and sorting based on standard deviation
+df = df.round(decimals=2)
+df = df.iloc[:,(-df.std()).argsort()]
+
+
+Sort the Dataframe based on Standard Deviation
+###############################################
+df = df.iloc[:,(-df.std()).argsort()]
+
+
+Format
+######
+# round to two decimal places in python pandas
+pd.options.display.float_format = '{:.2f}'.format
+
+Groupby, multiple aggegates
+###########################
+
+df = df_output_2015
+df.groupby(["Component", "Incident Year"])
+   .apply(
+	lambda x: pd.Series
+	    (
+    		{
+    		 "WO#": x["WO#"].count(),
+    		 "N_Wagon": x["Wagon"].nunique(),
+    		 "WOs/Wagon": x["WO#"].count() / x["Wagon"].nunique()
+    		}
+    	    )
+         )
+   .sort_values("WO#", ascending=False)[1:10]
+
+
+df_output_2015.groupby(["Component", "Incident Year"])\
+.agg({"WO#": lambda x: x.nunique(), "Wagon": lambda x: x.nunique()})\
+.sort_values("WO#", ascending=False)
+
+
+
+Groupby, rename
+###############
+
+df.groupby("A").agg({'B': [lambda x: 0, lambda x: 1]})
+
+df.groupby("A").agg(b=('B', lambda x: 0), c=('B', lambda x: 1))
+
+df.groupby(["item", "color"])["id"].count().reset_index(name="count")
+
+
+Grouby, call by index:
+######################
+df['Col 2'].loc[[('1', 'b')]]
+
+df_wpc_2021b.xs('14DW', level='Werk_Code')
+df_wpc.xs(("a", "b"), level=(0,2))	
+
+Groupby, Count>1
+#################
+
+df1 = df[df.groupby("Subdivision")["Shrtlan_Name"].transform('nunique')>1]
+df1 = df[df.groupby(['c0','c1'])['c2'].transform('count') > 1]
+df1 = df.groupby(['c0','c1']).filter(lambda x: len(x) > 1)
+
+df.groupby(['c0','c1'])['c2'].count().pipe(lambda  dfx: dfx.loc[dfx>1])
+
+
+Create Stacked DataFrame
+########################
+arrays = [ ["bar", "bar"],["one", "two"]]
+index = pd.MultiIndex.from_arrays(arrays, names=["werkstatt", "Jahr"])
+df = pd.DataFrame({"A": [1, 1], "B": np.arange(2)}, index=index)
+df
+
+			A	B
+werkstatt	Jahr
+bar		one	1	0
+two		1	1
+
+
+Groupby Analytics
+#################
+
+df.groupby(['Werk_Code', 'Produkt_Code_Original']).apply(lambda x: x['Nettowert'].sum()/x['Fahrzeugnummer'].nunique())
+
+
+def compute_metrics(x):
+    result = {
+            "Nettowert_sum": x["Nettowert"].sum(),
+	    "Fahrzeug_N": x["Fahrzeugnummer"].nunique(),
+	    "avg_wagon": x["Nettowert"].sum()/x["Fahrzeugnummer"].nunique()
+	    }
+    return pd.Series(result, name="metrics")
+df.groupby(['Werk_Code', 'Produkt_Code_Original']).apply(compute_metrics)
+
+
+Experiments with grouping and aggregrating
+##########################################
+
+grouped_df = df_cost.groupby(['Bauart'])
+grouped_df = grouped_df.agg({"Fahrzeugnummer": "nunique"})
+grouped_df = grouped_df.sort_values(by=['Fahrzeugnummer'], ascending=False)
+print(grouped_df)
+
+df_ba_fz = df_cost.groupby(['Bauart', 'Fahrzeugnummer'])
+count = 0
+for group_name, df_group in df_ba_fz:
+    if group_name[0] == '896':
+       count += 1
+print(count)
+
+
+A = df_cost['Bauart'].value_counts()
+B=[value for key, value in A.items() if key=='896']
+print(B)
+
+C=df_cost[['Bauart', 'Fahrzeugnummer']].value_counts()
+D= np.array([value for key, value in C.items() if key[0]=='896']).sum()
+print(D)
+
+Convert Datetime Column into String
+####################################
+
+B = [i.strftime("%Y-%m-%D") for i in df_553_allIH['Datum_Abrechnung']]
+len([i for i in B if "2021-" in i])
+
+
+Datetime 
+########
+
+df_kb['touchpoint_before'] = pd.to_datetime(touchpoint_before_int, format='%Y%m%d%H%M%S', errors = 'coerce')
+corece: ignores out-of-range errors
+
+1. df_kb['completion_date'].astype(int)
+   
+   df['a'] returns a Series object that has astype as a vectorized way to convert all elements in the series into another one.
+
+   df['a'][1] returns the content of one cell of the dataframe, in this case the string '0.123'. This is now returning a str object that doesn't have this function. 
+   To convert it use regular python instruction:
+
+   type(df['a'][1])
+   Out[25]: str
+
+   float(df['a'][1])
+   Out[26]: 0.123
+   
+   https://stackoverflow.com/questions/41917379/type-conversion-in-python-attributeerror-str-object-has-no-attribute-astype
+   
+2. df_kb['entry_date'] = df_kb['Erfassungsdatum'].dt.strftime('%Y%m%d235959')
+
+   remove .dt when in a loop and going row by row. In the latter case, you're converting each element individually. .dt is needed when it's a group of data, 
+   if it's only one element you don't need .dt otherwise it will raise {AttributeError: 'Timestamp' object has no attribute 'dt'}  
+   
+   https://stackoverflow.com/questions/62803633/timestamp-object-has-no-attribute-dt
+
+
+Finding Neighbouring Values
+###########################s
+
+def find_neighbours(value, df, colname):
+    exactmatch = df[df[colname] == value]
+    if not exactmatch.empty:
+        return exactmatch.index
+    else:
+        lowerneighbour_ind = df[df[colname] < value][colname].idxmax()
+        upperneighbour_ind = df[df[colname] > value][colname].idxmin()
+        return [lowerneighbour_ind, upperneighbour_ind] 
+
+
+Defining Dataframe
+##################
+df = pd.DataFrame({
+        'person':[x*3 for x in list('ABCDEF')],
+        'score1':np.random.randn(6),
+        'score2':np.random.randn(6),
+        'score3':np.random.randn(6),
+        'score4':np.random.randn(6),
+        'score5':np.random.randn(6)
+                   })
+
+
+Plot two quantities (one function of the other)
+###############################################
+
+df_aus.pivot(columns='km-stufe', values=col1).plot.hist(bins=500, ax=ax[0], alpha=0.5)
+
+
+Delete Column and Reinsert after manipulation
+#############################################
+
+columns = ['Wagennummer', 'Wagennummer_Krank']
+for col in columns:
+    locA = df_kb.columns.get_loc(col)
+    A = ["%s%s" %(re.split(r"[-]", x)[0], re.split(r"[-]", x)[1]) for x in df_kb[col]]
+    df_kb = df_kb.drop([col], axis=1)
+    df_kb.insert(loc=locA, column=col, value=A)
+    df_kb[col] = df_kb[col].astype(int)
+
+
+Do not load the dataframe once it's already been loaded
+#######################################################
+
+try:
+    print(df.shape)
+except AttributeError:
+    df = pd.read_csv("%s/touchpoints.csv" % (data_path))
+except NameError:
+    df = pd.read_csv("%s/touchpoints.csv" % (data_path))
+
+
+
+Look up column index using column name
+######################################
+df.columns.get_loc("Wagennummer")
+
+
+Join multiple string columns using agg
+######################################
+
+df['period'] = df[['Year', 'quarter', ...]].agg('-'.join, axis=1)
+
+
+Replace String on all Columns
+#############################
+
+df.replace(',', '-', regex=True)
+
+
+Read a csv with commas inside quotes that need to be ignored
+#############################################################
+
+df = pd.read_csv("%s/Abgleich_KB_Krankenblatt_DaP.csv" % (data_path), header=None, quotechar="'", skipinitialspace=True)
+
+
+Iterate over Groupby Object
+###########################
+
+df1_grouped = df1.groupby('atable')
+
+# iterate over each group
+for group_name, df_group in df1_grouped:
+
+    for row_index, row in df_group.iterrows():
+	
+
+
+Append a dataframe with a row of NaNs
+#####################################
+
+Example:
+s2       = pd.Series([Nan,Nan,Nan,Nan], index=['A', 'B', 'C', 'D'])
+result   = df1.append(s2)
+
+Automate:
+s2       = pd.Series(list(np.full(len(list(df_mmts.columns)), np.nan)), index = list(df_mmts.columns))
+df_first = df_first.append(s2, ignore_index=True)
+
+Histogram of datetime quantity
+##############################
+
+col = 'Radsatz eingebaut am'
+plt.figure(figsize=(20, 5))
+ax = (df_main[col].groupby([df_main[col].dt.year, df_main[col].dt.month]).count()).plot(kind="bar", color='red')
+ax.set_xlabel("Date")
+ax.set_title("Data: Radsatz eingebaut am")
+
+
+Selecting Columns using np.r
+############################
+
+df[df['SN'] == SN[i]].iloc[:, np.r_[5, 8:10, 11, 16, 37:39, 42:45, 55:57, 64, 73:74, 81:83, 86:88, 90:93]]
+
+
+
+Sum a DataFrame column using Condition (AND)
+############################################
+
+X Y
+1 3
+1 4
+2 6
+1 6
+2 3
+
+df.groupby('X')['Y'].sum()[1]
+df.query("X == 1")['Y'].sum()
+df.loc[df['X'] == 1, 'Y'].sum()
+
+-> 13
+
+df.groupby('X')['Y'].sum()
+df.query("X == 2 and Z == 2")['Y'].sum()
+df.loc[(df['X'] == 2) & (df['Z'] == 2), 'Y'].sum()
+
+
+EXAMPLE WITH OR
+################
+
+pivot[(pivot['Unnamed: 10']=='ja') | (pivot['Unnamed: 10']=='vllt')]
+
+
+
+Drop a Range of Rows
+####################
+
+>>>df_try = pd.DataFrame(np.arange(16).reshape(4, 4),\
+                   columns=['A', 'B', 'C', 'D'])
+>>>df_try.drop(range(1,3))
+
+
+
+Get Rid of NaNs from the dataframe
+##################################
+
+df_dropna = df.dropna(thresh=8)
+
+
+Inspect the Dropped Rows:
+
+(the first option is flawed because it also gets rid of duplicates in
+the original dataframe)
+
+Option 1 :
+df_na = pd.concat([df,df_dropna]).drop_duplicates(keep=False)
+
+Option 2:
+df_na = df[~df.apply(tuple,1).isin(df_dropna.apply(tuple,1))]
+
+
+Iterate over Columns and Rows in DataFrame
+##########################################
+
+for (columnName, columnData) in empDfObj.iteritems():
+   print('Colunm Name : ', columnName)
+   print('Column Contents : ', columnData.values)
+
+
+
+Print Format
+#############
+
+print("time = {ts} | km_stand = {km1} | km_stand = {km2} ".format(ts=timestamp[i], km1=km_stand[i], km2=km_stand[i-1]))
+
+print("time = %s | km_stand = %.2f | km_stand = %.2f "%(timestamp[i], km_stand[i], km_stand[i-1]))
+
+
+Save the sql result as a dataframe
+####################################
+
+df = myResult.to_pandas(use_threads=8)
+
+
+Sort by timestamp
+##################
+
+df['time_stamp'] = pd.to_datetime(df['time_stamp'])
+df = df.sort_values(by='time_stamp')
+
+
+Convert Numpy array into dataframe
+##################################
+
+df1 = pd.DataFrame({'Column1': vel_kmstand_nochange})
+# vel_kmstand_nochange is a numpy array here
+
+df1.hist(bins=10, column='Column1', range=[0, 10])
+
+pd.cut(df1['Column1'], [75,80]).value_counts()
+
+list(set(df1.Column1))
+list(df1['Column1'].unique())
+
+
+Convert a DataFrame Column into a Numpy Array
+#############################################
+b=df_4states.iloc[:,4:].values[:,0]
+
+(4th column, just the values not the individual arrays)
+
+
+
+Convert dataframe into Numpy array
+##################################
+
+data=df.to_numpy()
+
+
+matplotlib converters
+######################
+
+from pandas.plotting import register_matplotlib_converters
+register_matplotlib_converters()
+
+
+Unique values for column zsg1n_m_hs_ein
+#######################################
+
+list(set(df.zsg1n_m_hs_ein))
+list(df['zsg1n_m_hs_ein'].unique())
+
+-> ([False, True, None], [True, False, None])
+
+
+Count the Unique Values
+#######################
+
+### Provide the number of bins (optional) ###
+
+pd.cut(df['zsg1n_iw_vist'], 2).value_counts()
+
+-> (-0.142, 71.0]    246362
+-> (71.0, 142.0]     100269
+-> Name: zsg1n_iw_vist, dtype: int64
+
+
+### Count with Where ###
+
+vel_int_zero = pd.cut(vel_inst[np.where(vel_inst == 0)], bins=1).value_counts()
+vel_int_zero = vel_int_zero[-1]
+
+
+Boolean or Numeric:
+
+df.zsg1n_m_hs_ein.value_counts()
+
+-> True     335182
+-> False     12025
+-> Name: zsg1n_m_hs_ein, dtype: int64
+
+
+Count True/False
+#################
+
+df.has_cancer.value_counts()
+False    6
+True     1
+Name: has_cancer, dtype: int64
+
+df.has_cancer.value_counts().loc[False]
+6
+
+
+Histogram
+##########
+
+vel_hist = df.hist(bins=10, column='zsg1n_iw_vist', range=[0, 1])
+
+df.plot.hist(ylim=(0,1)) # haven't tried it but ought to work
+
+

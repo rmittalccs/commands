@@ -1,0 +1,28 @@
+pdftk:
+1. brew tap docmunch/pdftk
+2. brew install pdftk
+
+gnuplot:
+- brew install gnuplot -> gnuplot was not supporting x11 even after I
+installed XQuartz
+- The following trick worked:
+brew uninstall gnuplot; brew install gnuplot --with-x11 --wx --cairo --pdf --with-x --tutorial
+
+Warning: gnuplot: --with-x was deprecated; using --with-x11 instead!
+Warning: gnuplot: --pdf was deprecated; using --with-pdflib-lite instead!
+Warning: gnuplot: --wx was deprecated; using --with-wxmac instead!
+Warning: gnuplot: --cairo was deprecated; using --with-cairo instead!
+
+------------------------------
+
+I had to do the following so that brew installed things properly without giving the message
+
+---------------------
+Error: The `brew link` step did not complete successfully
+The formula built, but is not symlinked into /usr/local
+Could not symlink bin/jbig2dec
+/usr/local/bin is not writable.
+---------------------
+
+sudo chown -R "$USER":admin /usr/local
+sudo chown -R "$USER":admin /Library/Caches/Homebrew

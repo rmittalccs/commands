@@ -1,0 +1,40 @@
+### Example Commands ###
+git log
+qgit &  (GUI)
+git config user.name "Rupal Mittal"
+git config user.email "rmittal@astro.rit.edu"
+git log fitspectra.py
+git show b45fb:fitspectra.py
+
+### Log in ###
+ssh-add ~/.ssh/hst_dsa
+
+### Add or Retrieve new commits ###
+git pull -> retrieve any changes made to the git repository
+git add . -> add changes (usually not used unless you want to track all the files)
+git commit -a -> commit those changes to git
+git push -> push the changes into the git repository
+
+### In case of conflicts ###
+\rm conflicted_directory/*
+# make sure you have no uncommitted changes you want
+git reset --hard
+git pull
+
+### Other commonly used git commands ###
+git commit --amend -m "New commit message"
+git config --global core.editor "emacs -nw"
+
+
+### Revert a file to an older version ###
+git show 1b54a803a6a4:python_scripts/posteriors/Makefile > Makefile
+
+The hexadecimal code to the commit to the wanted version can be found via "git log".
+The first 6-7 letters/numbers should suffice to uniquely specify that commit.
+
+
+### Show the files changes ###
+git show --stat <commit-hash>
+
+where the <commit-has> are the first 8-12 digits of the hexadecimal
+hash corresponding to the git commit (do a git log).

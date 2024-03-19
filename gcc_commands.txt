@@ -1,0 +1,9 @@
+gcc source_position.c -o source_position.out -lm -L/homes/rmittal/programs/lib -I/homes/rmittal/programs/include -lgsl -lgslcblas
+
+Files including gsl and pgplot commands
+----------------------------------------
+
+gcc rel_mag_conts_iso.c -c -o rel_mag_conts_iso.o -I/homes/rmittal/programs/include -I/homes/rmittal/programs/pgplot
+
+f77 -o rel_mag_conts_iso.out rel_mag_conts_iso.o -lpgplot -lcpgplot -lX11 -lm -lgsl -lgslcblas -L/homes/rmittal/programs/pgplot -L/homes/rmittal/programs/lib -L/usr/X11R6/lib
+

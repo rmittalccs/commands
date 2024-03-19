@@ -1,0 +1,527 @@
+Creating unique pairs out of two lists
+######################################
+from itertools import product
+c = list(product(lat, lon))
+
+
+Sort two list using zip
+#######################
+
+# Initialize two list
+marks=[90, 56, 78, 86]
+countries=['China','Japan','Russia','India']
+
+for (a, b) in sorted(zip(marks, countries), key = lambda x: x[0]):
+    print(a, b)
+
+
+Intersection of Sets
+####################
+
+def IntersectOfSets(arr1, arr2, arr3):
+    # Converting the arrays into sets
+        s1 = set(arr1)
+	    s2 = set(arr2)
+	        s3 = set(arr3)
+
+    # Calculates intersection of
+        # sets on s1 and s2
+	    set1 = s1.intersection(s2)         #[80, 20, 100]
+
+    # Calculates intersection of sets
+        # on set1 and s3
+	    result_set = set1.intersection(s3)
+
+    # Converts resulting set to list
+        final_list = list(result_set)
+	    return(final_list)
+
+
+Break and Continue in nested loops
+##################################
+
+for i in l1:
+    print('Start outer loop')
+
+    for j in l2:
+        print('--', i, j)
+	if i == 2 and j == 20:
+	   print('-- BREAK inner loop')
+	   break
+    else:
+	print('-- Finish inner loop without BREAK')
+	continue
+
+    print('BREAK outer loop')
+        break
+	
+# Start outer loop
+# -- 1 10
+# -- 1 20
+# -- 1 30
+# -- Finish inner loop without BREAK
+# Start outer loop
+# -- 2 10
+# -- 2 20
+# -- BREAK inner loop
+# BREAK outer loop
+
+
+Multiprocessing
+###############
+
+from multiprocessing.pool import ThreadPool as Pool
+# from multiprocessing import Pool
+
+pool_size = 5  # your "parallelness"
+
+def my_operation(n):
+    print(n*n)
+    #    return(n*n)
+
+# define worker function before a Pool is instantiated
+def worker(item):
+    try:
+	my_operation(item)
+    except:
+	print('error with item')
+
+pool = Pool(pool_size)
+
+items=(1, 2, 3, 4)
+
+for item in items:
+    pool.apply_async(worker, (item,))
+
+pool.close()
+pool.join()
+
+
+
+Map a UDF Function to an Array of DataFrames
+#############################################
+[[df_table5a_prdarb, exclude_codes_5a], [df_table5b_arb, exclude_codes_5b]] = list(map(lambda i:product_arbeit(i), table))
+
+
+Save and load a dictionary
+###########################
+# Save
+dictionary = {'hello':'world'}
+np.save('my_file.npy', dictionary) 
+
+# Load
+read_dictionary = np.load('my_file.npy',allow_pickle='TRUE').item()
+print(read_dictionary['hello']) # displays "world"
+
+
+Create a Variable Dictionary Name
+#################################
+
+d = {}
+d["name"] = "Apache Web Server"
+d["category"] = "web"
+d["version"] = "2.2.14-4"
+
+locals()["apache"] = d
+
+print apache
+
+
+Search a n-dim array
+####################
+
+rows = np.where(t[:,3] == 'bar')
+result = t1[rows]
+
+This returns:
+ [[2,3,4,'bar'],
+  [8,9,1,'bar']]
+
+
+Convert Image into String
+#########################
+
+You must be careful about the datatypes.
+
+If you read a binary image, you get bytes. If you encode these bytes in base64, you get ... bytes again! (see documentation on b64encode)
+
+json can't handle raw bytes, that's why you get the error.
+
+I have just written some example, with comments, I hope it helps:
+
+from base64 import b64encode
+from json import dumps
+
+ENCODING = 'utf-8'
+IMAGE_NAME = 'spam.jpg'
+JSON_NAME = 'output.json'
+
+# first: reading the binary stuff
+# note the 'rb' flag
+# result: bytes
+with open(IMAGE_NAME, 'rb') as open_file:
+    byte_content = open_file.read()
+
+# second: base64 encode read data
+# result: bytes (again)
+base64_bytes = b64encode(byte_content)
+
+# third: decode these bytes to text
+# result: string (in utf-8)
+base64_string = base64_bytes.decode(ENCODING)
+
+
+Create a Virtual Python Environment
+###################################
+
+1. python3 -m venv .venv 
+2. source .venv/bin/activate
+
+3. cd git/repository/
+   pip install -r requirements.txt
+
+4. python -m ipykernel install --user --name="ddg"
+
+
+Look inside a Python Object
+###########################
+
+Python has a strong set of introspection features.
+
+Take a look at the following built-in functions:
+
+type()
+dir()
+id()
+getattr()
+hasattr()
+globals()
+locals()
+callable()
+
+
+Nested Dictionary
+#################
+
+people = {1: {'name': 'John', 'age': '27', 'sex': 'Male'},
+          2: {'name': 'Marie', 'age': '22', 'sex': 'Female'}}
+
+print(people[1]['name'])
+print(people[1]['age'])
+print(people[1]['sex'])
+
+
+Input
+#####
+
+env_input = input("DEV/INT/PRD?:")
+uid_input = input("Username:")
+pwd_input = getpass.getpass("Password:")
+
+
+Return unique values and counts side-by-side
+############################################
+
+np.array(np.unique(y_train, return_counts=True)).T
+
+
+Dictionary: Filter by Value
+###########################
+d1 = {1:11, 2:22, 3:33}
+
+# filter by value
+d2 = {}
+
+for key,value in d1.items():
+    if value in [22,33]:
+        d2.update({key:value})
+print(d2)
+
+
+
+Numpy Array: Rolls and Shifts
+#############################
+
+err = globals()['SN%d' % i][var_input[j]]
+err_roll = np.roll(err, -1)
+sum_err = (err**2 + err_roll**2)[:-1]   
+globals()[dvar_output[j]] = np.concatenate(([np.NaN], sum_err), axis=0)
+
+
+Example of Sub-Plots
+####################
+
+### SubPlots Example
+fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(16, 8))
+for m in range(nrows):
+    for n in range(ncols):
+        axes[m,n].set_xlabel(col1)
+        axes[m,n].set_ylabel(col2)
+        fig.suptitle('Serial Number: %s \n Km vs DM, Sd, Sh, qR' %(sno))
+        axes[m, n].plot(sni_col[col1], sni_col[col], 'o', ls='-', color= gc[cc])
+        axes[m, n].axvline(x=j, label='ULM', color='green', lw=3)
+	
+
+
+
+Append a two-dim array
+#######################
+
+>>> A = [[]]
+>>> A.append([])
+    
+>>> for i in range(2):
+>>>     A[0].append(i)
+>>>     A[1].append(i+10)
+
+>>> np.array(A)
+
+array([[ 0,  1],
+       [10, 11]])
+
+
+Dictionary, keywords
+#####################
+
+Example:
+
+col = np.array(["total", "km_NaN", "vel_NaN", "Battery_NaN", "HBU1_NaN", "HBU2_NaN", \
+                    "HS_NaN", "km_NaN_vel_F", "vel_NaN_km_F", "vel_km_NaN", "vel_Battery_NaN"])
+
+col_avg = ["%s_avg" %(x) for x in col]
+col_std = ["%s_std" %(x) for x in col]
+col_sum = ["%s_sum" %(x) for x in col]
+
+col_avg_dict = {}
+col_std_dict = {}
+col_sum_dict = {}
+
+for i in range(len(col)):
+    col_avg_dict[col_avg[i]] = 0
+    col_std_dict[col_std[i]] = 0
+    col_sum_dict[col_sum[i]] = 0
+
+for i in range(len(col)):
+    print("%s, %s" %(col_avg[i], col_std[i]))
+
+col_avg_dict[col_avg[0]]
+
+
+Example:
+
+>>>d = {'a': 1, 'b': 2}
+>>>d.keys()
+dict_keys(['a', 'b'])
+
+
+Datetime Print Format
+#####################
+print(timestamp[200].strftime('%Y %m %d  %H:%M:%S'))
+2017 06 22  16:40:03
+
+Datetime
+#########
+
+>>>import datetime
+>>>datetime.datetime.strptime('January 11, 2010', '%B %d, %Y').strftime('%A')
+'Monday'
+
+>>> datetime.datetime.strptime('January 11, 2010', '%B %d, %Y').strftime('%a')
+'Mon'
+
+
+Extract Indices/Values from Arrays adhering to Constraints
+##########################################################
+
+>>> A = np.array([1, 2, 3, 4, 5])
+>>> np.logical_and(A <=5, A >= 2)
+
+Array([False,  True,  True,  True,  True, False])
+
+>>> [x for x in A if 2 <= x <= 5]
+
+[2, 3, 4, 5]
+
+Extract Indices from Arrays adhereing to Constraints
+####################################################
+
+
+idx = np.array([])
+for i in [x for x in timestamp if datetime.datetime(2017, 6, 24, 9, 5, 0, 0) <= x <= datetime.datetime(2017, 6, 24, 9, 15, 0, 0)]:
+    id = np.where(timestamp == i)[0][0]
+    idx = np.append(idx, id)
+print(idx)
+
+Cocatenate Arrays
+#################
+
+Example 1:
+
+>>> a = np.array([1, 3])
+>>> b = np.array([5, 6])
+>>> np.concatenate((a[:, None], b[:, None]), axis = -1)
+array([[1, 5],
+       [3, 6]])
+
+
+Example 2:
+
+>>> a = np.array([[1, 2], [3, 4]])
+>>> b = np.array([[5, 6]])
+>>> np.concatenate((a, b), axis=0)
+array([[1, 2],
+       [3, 4],
+       [5, 6]])
+>>> np.concatenate((a, b.T), axis=1)
+array([[1, 2, 5],
+       [3, 4, 6]])
+
+
+Example 3:
+>>>A = np.concatenate((np.full(5, "done"), np.full(6, 1), np.full(2, 2)), axis = 0)
+>>>A
+
+array(['done', 'done', 'done', 'done', 'done', '1', '1', '1', '1', '1',
+       '1', '2', '2'], dtype='<U21')
+
+
+Countif
+#######
+
+sum(meets_condition(x) for x in my_list)
+
+ or
+
+len([x for x in my_list if meets_condition(x)])
+
+
+Variable Array Name
+###################
+
+nw = 1
+
+globals()['kmstand_diff%d' % nw] = np.empty(N)
+globals()['kmstand_diff%d' % nw][:] = np.nan
+
+globals()['vel_avg%d' % nw] = np.empty(N)
+globals()['vel_avg%d' % nw][:] = np.nan
+
+for i in range(10):
+    globals()['kmstand_diff%d' % nw][i] = i 
+    globals()['vel_avg%d' % nw][i] = 2*i
+
+print(kmstand_diff1, vel_avg1)
+
+
+
+Check if all Elements of an Array are Finite
+############################################
+
+A = [(1.0, np.nan)]
+
+np.isfinite(A)
+-> [ True False]
+
+np.all(np.isfinite(A))
+-> False
+
+
+Numpy Array Where
+##################
+
+A = np.empty(10)
+A[:] = np.nan
+A[5] = 5
+
+np.where(A>4,A,0)
+-> array([0., 0., 0., 0., 0., 5., 0., 0., 0., 0.])
+
+np.isnan(A)
+-> array([ True,  True,  True,  True,  True, False,  True,  True,  True,
+        True])
+
+
+Create Multiple Arrays
+######################
+
+>>>a, b, c = [np.zeros(5) for _ in range(3)]
+
+>>>a, b, c = [np.zeros(5), np.zeros(6), np.zeros(2)]
+>>>a, b, c
+
+(array([0., 0., 0., 0., 0.]), array([0., 0., 0., 0., 0., 0.]), array([0., 0.]))
+
+
+>>>a, b, c = [np.full(5, 0), np.full(6, 1), np.full(2, 2)]
+>>>a, b, c
+
+(array([0, 0, 0, 0, 0]), array([1, 1, 1, 1, 1, 1]), array([2, 2]))
+
+
+
+Create an Array of Fixed Dimension
+##################################
+
+A = np.empty(10)
+A[:] = np.nan
+A = np.append(A,1)
+A[5] = 5
+A
+-> array([nan, nan, nan, nan, nan,  5., nan, nan, nan, nan,  1.])
+
+
+Create an Array of Non-Specified Dimension
+###########################################
+
+A = np.array([])
+A = np.append(A, #)
+
+Create Multiple Arrays and Lists at once
+########################################
+
+alist, blist, clist, dlist, elist   = ([] for i in range(5))
+lok, tbeg, tend, tdiff, vbeg, vend  = (np.array([]) for i in range(6))
+
+
+Sprintf
+#######
+
+s = 'frac_nan_' + repr(lok1)
+print(s)
+
+
+Check Two Arrays for Nans Simultaneously
+########################################
+
+if np.all(np.isfinite(velsub)) and ~np.all(np.isfinite(velsub)):
+
+
+Count NaNs and Non-NaNs in an Array
+###################################
+
+sum(np.isnan(vel_avg1)), sum(~np.isnan(vel_avg1)) 
+
+
+Look for NaNs in Array
+######################
+
+count=0
+for i in range(len(timestamp)):
+    #print(vel_inst[i])
+    if np.isnan(vel_inst[i]):
+        count = count+1
+
+
+Plotting with Matplotlib Pyplot
+###############################
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams["figure.figsize"] = [16,4]
+axes = plt.gca()
+axes.plot(timestamp, vel_inst, 'ro')
+axes.set_ylim([0,100])
+
+

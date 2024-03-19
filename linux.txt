@@ -1,0 +1,108 @@
+Count files in subdirectories
+du -a | cut -d/ -f2 | sort | uniq -c | sort -nr
+
+
+Find empty directories:
+find */dd/*.inmove/ -type d -empty
+
+Print a file with a varying name 0 to n times
+for x in {0..n}; do echo file$x.dat ; done > foo
+
+Move all files from localdir to currentdir except one (fbfile in this case):
+find ${localdir} -type f ! -name "${fbfile}" -exec mv {} ${currentdir} \;
+
+Count the number of columns in a file:
+head -1 file  | tr ' ' '\n' | wc -l
+
+Sort exponential numbers:
+sort -g -k5
+
+Makefile: equal or
+ifeq ($(GCC_MINOR),$(filter $(GCC_MINOR),4 5))
+filter X, A B will return those of A,B that are equal X. 
+
+Untar bz2:
+bunzip2 filename.tar.bz2
+tar -xvjpf filename.tar.bz2
+
+MAC: wget replaced by 'curl -O'
+
+Restrict find and linking to depth 1 (no subdirectories):
+find ../Results/ -maxdepth 1 -name "NGC1275-*" -exec ln -s {} \;
+
+Run something, get files and tar them all up:
+source foo | xargs tar -czvf backup.tgz ; mv backup.tgz backup/
+
+One liner perl in makefile:
+If there's a perl variable such as $F[0] -> you need to escape the $ character by adding another $ -> $$F[0]
+
+Command line syntax to check whether a directory exists or not:
+[ -d dir ] && echo "exists" || echo "does not exist"
+
+mkv to avi: (http://www.howforge.com/how-to-convert-mkv-to-avi-using-mencoder)
+mplayer input.mkv -ao pcm:fast:file=audio.wav -vc null -vo null
+mencoder input.mkv \
+    -ffourcc divx \
+    -ovc lavc -lavcopts vcodec=mpeg4:vhq:vbitrate=400 \
+    -audiofile audio.wav \
+    -oac mp3lame -lameopts vbr=3 \
+    -o output.avi
+
+
+Copy file $1 into dir $2 with a timestamp:
+cp $1 $2/$1_`date +"%H:%M:%S_%d-%m-%Y"`
+
+Emacs:
+C-u 85 C-x f for a line length of 85. 
+
+Rotate a Movie:
+mencoder -vf rotate=1 -ovc lavc -oac copy movie.avi -o movie_rotate.avi
+
+gunzip files obtained with wget but with linknames rather than filenames:(HST data)
+gunzip -Nf -S ""
+
+Sort numericall by column (3 for example):
+sort -k3n,3 data.file
+
+Gnuplot background (didn't work for me though)
+gnuplot -xrm 'gnuplot*background:black' NGC1275_OI.gnu
+
+Find and convert all files for a certain ext to another ext:
+bash
+for x in *.tiff; do convert -crop 418x323+0+60 $x `basename $x tiff`jpg; done
+
+Find and copy/move/remove collectively:
+find . -name "filetype" -exec cp {} dir_to_copy \;
+[Example:
+find . -name "*.py" -exec cp {} original_scripts/ \;]
+
+Recursive ftp:
+wget -r ftp://username:password@domain.com/directory/
+
+[Example:
+wget -r ftp://hipe_user:beta_tester@ftp.sciops.esa.int/v1.1_Sep09/SPIRE_PHOT/]
+
+Merge ps/pdf files:
+pdftk A=191100.pdf B=192032.pdf cat AS BN output documents.pdf
+gs -sDEVICE=pswrite -sOutputFile=output.ps -dNOPAUSE -dBATCH file1.ps file2.ps file3.ps
+
+Find text in files:
+grep .dadevs `find . -name "*"`    -->    to find the text .dadevs in all files in .
+
+List all the installations
+rpm -q -a | less 
+
+Find out the linux version
+cat /etc/issue
+
+Find out the java version
+java -version
+
+View the envrn variables 
+printenv | sort | less
+
+Update the DataBase (http://www.djangrrl.com/view/update-locate-database-for-mac-os-x/)
+sudo /usr/libexec/locate.updatedb
+
+Convert all eps files to pdf
+ls *.eps | awk '{system("epstopdf "$0 )}'

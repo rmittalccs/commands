@@ -1,0 +1,51 @@
+SSH TO A SERVER WITHOUT HAVING TO ENTER A PASSWORD:
+1.
+on local machine:
+
+If ~/.ssh/id_rsa.pub does not exist:
+ssh-keygen -t rsa
+
+2.
+ssh-copy-id -i ~/.ssh/id_rsa.pub remote-machine
+
+if ssh-copy-id command not found
+scp ~/.ssh/id_rsa.pub user@server:~/.ssh/authorized_keys
+
+[Keep in mind that will overwrite ~/.ssh/authorized_keys on the server if you already have it.]
+
+3.
+chmod 600 authorized_keys or chmod o-r
+
+
+AIFA:
+ssh -t gate1 -e 'ssh aibn208'
+
+####################################################
+
+CREATING hst_dsa
+
+1. ssh-keygen -t dsa -f ~/.ssh/hst_dsa
+
+(this prompts you to enter a passphrase)
+
+2. mkdir ~/.tcsh
+
+   cp start_agent.csh ~/.tcsh
+   (I got the .csh file from John)
+
+   cd ~/.tcsh
+
+   source start_agent.csh
+
+   ssh-add ~/.ssh/hst_dsa
+   (this asks for THE passphrase again)
+
+3. Add the following in .cshrc
+   source ~/.tcsh/start_agent.csh
+
+4. mkdir ~/git
+
+   cd git
+
+   git clone gitosis@orcus.ccrg.rit.edu:HSTBCG
+

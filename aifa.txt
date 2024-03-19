@@ -1,0 +1,6 @@
+ftp.astro.uni-bonn.de/pub/rmittal
+
+cd /aibn91_0/ftpd/pub/rmittal
+                 /incoming/rmittal
+
+ftp://ftp.astro.uni-bonn.de/pub/rmittal/

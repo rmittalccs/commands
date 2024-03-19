@@ -1,0 +1,28 @@
+Crop an image based on a threshold
+##################################
+
+# Read the image, convert it into grayscale, and make in binary image for threshold value of 1.
+img = cv2.imread('sofwin.png')
+gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+_,thresh = cv2.threshold(gray,1,255,cv2.THRESH_BINARY)
+
+#Now find contours in it. There will be only one object, so find bounding rectangle for it.
+contours,hierarchy = cv2.findContours(thresh,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+cnt = contours[0]
+x,y,w,h = cv2.boundingRect(cnt)
+
+#Now crop the image, and save it into another file.
+crop = img[y:y+h,x:x+w]
+cv2.imwrite('sofwinres.png',crop)
+
+
+Crop an image 
+#############
+import cv2
+img = cv2.imread("lenna.png")
+crop_img = img[y:y+h, x:x+w]
+
+
+imwrite 
+#######
+cv2.imwrite('houghlines3.jpg',img, [cv2.IMWRITE_JPEG_QUALITY, 200])

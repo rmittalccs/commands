@@ -1,0 +1,93 @@
+Counts
+######
+sdf_s927_grouped=sdf_s927_unq.groupBy("Fahrzeugnummer","Datum_Abrechnung_Jahr", "Werk_Code").count().filter("count > 1")
+
+
+Convert Pandas to PySpark
+##########################
+sdf = spark.createDataFrame(pdf)
+
+
+Select a yr
+###########
+sdf_s927 = sdf_s927.filter(year(sdf_s927.Datum_Abrechnung)==lit(2021))
+
+
+Select a TimeRange
+###################
+
+test_df.filter(F.col("start").between(pd.to_datetime('2017-04-13'),pd.to_datetime('2017-04-14'))).show()
+test_df.filter(F.col("start").between('2017-04-13 12:00:00','2017-04-14 00:00:00')).show()
+
+
+
+Refresh a Table
+################
+spark.catalog.refreshTable("sap_isi__s927")
+
+
+RM_touchpoint.ipynb snipped saved
+#################################
+
+run = False
+if run:
+    query = "(SELECT touchpoint, shortPath, uic, folder, actiondt FROM DDG.touchpoints where actiondt >= to_timestamp('%s', 'yyyy-mm-dd') and actiondt <= to_timestamp('%s', 'yyyy-mm-dd'))" %(tbeg, tend)
+    #query = "(SELECT touchpoint, actiondt FROM DDG.touchpoints where actiondt >= to_timestamp('%s', 'yyyy-mm-dd') and actiondt <= to_timestamp('%s', 'yyyy-mm-dd'))" %(tbeg, tend)
+
+    #with util_spark.spark_timezone("UTC"):
+    sp_tp = spark.read.jdbc(url=environ["DREMIO_JDBC_CONNECTION_STRING"], table=query, properties={"user": cred['username'], "password": cred['password']})
+    sp_tp = util_dataprep.reformat_spark_touchpoint(sp_tp)
+
+%%time
+run = False
+if run:
+    df_tp = sp_tp.toPandas()
+
+##### Second Method Part-II: Groupby touchpoint, uic after reading in the Spark Data Frame above
+
+%%time
+run = False
+if run:
+    sp_tp_new = sp_tp.select("touchpoint", "uic").distinct()
+    #sp_tp_new.orderBy("touchpoint", "uic").show(20)
+
+#sp_tp_new.count()
+
+%%time
+run = False
+if run:
+    df_tp_new = sp_tp_new.toPandas()
+
+
+
+Groupby Examples
+################
+
+sp_tp_new = (sp_tp.groupBy("touchpoint", "uic")).agg(F.min('uic').alias("minfolder"))
+sp_tp_new.orderBy("touchpoint", "uic").show(20)
+
+sp_tp_new = sp_tp.select("touchpoint", "uic").distinct()
+sp_tp_new.orderBy("touchpoint", "uic").show(20)
+
+
+# Get unique values in the grouping column
+groups = [x[0] for x in sp_tp.select("touchpoint").distinct().collect()]
+# Create a filtered DataFrame for each group in a list comprehension
+groups_list = [sp_tp.filter(F.col('touchpoint')==x) for x in groups]
+# show the results
+[x.show() for x in groups_list]
+# Collect the first row of each group
+sp_tp_groupbytp_onerow = [x.take(1) for x in groups_list]
+
+RenameColumn
+#############
+
+from functools import reduce
+
+oldColumns = data.schema.names
+newColumns = ["name", "age"]
+
+df = reduce(lambda data, idx: data.withColumnRenamed(oldColumns[idx], newColumns[idx]), xrange(len(oldColumns)), data)
+df.printSchema()
+df.show()
+

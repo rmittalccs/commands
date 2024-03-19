@@ -1,0 +1,5 @@
+import yaml
+
+with open('20200522_152110.yaml', 'r') as f:
+    data = yaml.load(f, Loader=yaml.FullLoader)
+

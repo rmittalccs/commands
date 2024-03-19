@@ -1,0 +1,30 @@
+SELECT a.*, b.Anzahl_Schadcode4 FROM (SELECT tmp.*, substring(Schadcode, 1,4) as Schadcode4 FROM DDG."SAP_ISI"."s927_s941" as tmp
+WHERE "Datum_Bestellung" >= '2017-01-01'
+  AND "Datum_Bestellung" <= '2021-01-01'
+  AND ((IH_Stufe_Code = 'G10'
+        or IH_Stufe_Code = 'G30'
+        or IH_Stufe_Code = '030'
+        or IH_Stufe_Code = '032'
+        or IH_Stufe_Code = '031'
+        or IH_Stufe_Code = '040'
+        or IH_Stufe_Code = '041')
+       AND (Werk_Code = '14CO'
+            or Werk_Code = '14OH'))
+) as a
+left outer join (SELECT SUBSTRING(Schadcode, 1, 4) AS "Schadcode4",
+       count(*) AS Anzahl_Schadcode4
+       FROM "DDG"."SAP_ISI"."s927_s941"
+WHERE "Datum_Bestellung" >= '2017-01-01'
+  AND "Datum_Bestellung" <= '2021-01-01'
+  AND ((IH_Stufe_Code = 'G10'
+        or IH_Stufe_Code = 'G30'
+        or IH_Stufe_Code = '030'
+        or IH_Stufe_Code = '032'
+        or IH_Stufe_Code = '031'
+        or IH_Stufe_Code = '040'
+        or IH_Stufe_Code = '041')
+       AND (Werk_Code = '14CO'
+            or Werk_Code = '14OH'))
+GROUP BY SUBSTRING(Schadcode, 1, 4)
+HAVING count(*) > 3000) as b 
+on a.Schadcode4=b.Schadcode4

@@ -1,0 +1,5 @@
+fcreate cdfile= coldesc_file.lis datafile = file.dat outfile = file.fits headfile = keywords_file.lis
+
+fitscopy 'infile.fits[101:200,201:300]' out.fits.gz
+
+dmcopy "infile.fits[(x,y)=Region(*.reg)]" outfile.fits

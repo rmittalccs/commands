@@ -1,0 +1,35 @@
+To print the value at each data point
+-------------------------------------
+
+1.
+
+perl -ane 'print "set label \"($F[0])\" at $F[56],$F[70]\n"' HIFLUGCS_XR_correlation.txt > label.plt
+
+load "label.plt"
+
+load "CoolRadius_RadioLum.gnu"
+
+2.
+
+perl -ane 'print "set label \"$F[0]\" at ($F[41],$F[70]+0.075*$F[70])\n"' HIFLUGCS_XR_correlation.txt > label_MD_CF_RadLum.plt
+
+3.
+
+perl -ane 'if ($F[81]>0) {print "set label \"$F[0]\" at $F[41],$F[70]+0.1*$F[70] \n"}' HIFLUGCS_XR_correlation.txt > label_MD_CF_RadLum.plt
+
+
+4. 
+
+Code forSolar masses per year:
+
+MD_{spec} < 1 M_{{/=8 O}&{/*-1.0 O}{/=8 \267}} yr^{-1}
+
+"I created the solar symbol using a capital "O" and the dot "\267" and
+put a negative space in between. The size of the space depends on the
+size of the current font, and I had to play around a bit, but for a
+Helvetica in 16pt with and subscript characters in 12pt it is -0.66 of
+an "O".".
+
+By some Peter 
+
+5. plot “< echo ‘x   y’”

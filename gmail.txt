@@ -1,0 +1,4 @@
+Quick Version: GMail Filters for Finding Unlabeled Messages
+(http://raisedbyturtles.org/view-unlabeled-gmail)
+
+-has:userlabels -in:sent -in:chat -in:draft -in:inbox 

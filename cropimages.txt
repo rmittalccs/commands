@@ -1,0 +1,3 @@
+fitscopy 'infile.fits[101:200,201:300]' out.fits.gz
+
+dmcopy "infile.fits[(x,y)=Region(*.reg)]" outfile.fits

@@ -1,0 +1,66 @@
+##################
+### SETTING UP ###
+##################
+
+If you're a bash user go to http://mah.everybody.org/docs/ssh for steps 2 and 3. 
+
+1. ssh-keygen -t dsa -f ~/.ssh/hst_dsa
+
+(this prompts you to enter a passphrase - make up a robust 
+passphrase or else you're risking security of the machine)
+
+2. mkdir ~/.tcsh
+
+   cp start_agent.csh ~/.tcsh
+   (attached)
+
+   cd ~/.tcsh
+
+   source start_agent.csh
+
+   ssh-add ~/.ssh/hst_dsa
+   (this asks for THE passphrase again)
+
+3. Add the following in .cshrc
+   source ~/.ssh/start_agent.csh
+
+4. mkdir ~/git
+
+   cd git
+
+   git clone gitosis@orcus.ccrg.rit.edu:HSTBCG
+
+5. cd HSTBCG
+   
+   git config user.name "Rupal Mittal" (example)
+   
+   git config user.email "rmittal@astro.rit.edu" (example)
+
+
+
+################
+### COMMANDS ###
+################
+
+### Log in ###
+ssh-add ~/.ssh/hst_dsa
+
+### Add or Retrieve new commits ###
+git pull -> retrieve any changes made to the git repository
+git add <file> -> start tracking <file>
+git commit -a -> commit those changes to your local clone
+git push -> push the changes into the git repository
+
+### Other Commands ###
+git log
+qgit &  (GUI)
+git log fitspectra.py
+git show b45fb:fitspectra.py
+
+Suggestions:
+1. Before you start an editing session, do a git pull to avoid conflicts
+2. If you're using make files, then no need to track the output files,
+   other users should be able to run make and create those files - especially
+   true for heavy pdf files.
+3. Avoid tracking executables that are system dependent (like compiled
+   C codes).

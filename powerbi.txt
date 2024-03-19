@@ -1,0 +1,7 @@
+New Measures
+############
+
+California_Rail_Network
+
+y_high = MAX('segments'[Elevation]) + 0.05*MAX('segments'[Elevation])
+y_low = MIN('segments'[Elevation]) - 0.05*MIN('segments'[Elevation])

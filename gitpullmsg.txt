@@ -1,0 +1,13 @@
+on the issue36 branch (27th July 2020)
+######################################
+
+(aic_python37) rupalmittal@aiccrgodevfe01:~/git/fahrzeug_instandhaltung_ewa_prognose$ git pull
+Enter passphrase for key '/home/rupalmittal/.ssh/id_rsa':
+Merge made by the 'recursive' strategy.
+ docs/source/csvs/nennmass_df.csv            |  2 +-
+ docs/source/nennmass.rst                    | 45 ++++++++++++++++++---------------------------
+ docs/source/profildaten.rst                 |  2 +-
+ pipeline/data_preparation/aggregate_data.py |  2 +-
+ pipeline/data_preparation/merge_raw_data.py |  1 +
+ 5 files changed, 22 insertions(+), 30 deletions(-)
+ 

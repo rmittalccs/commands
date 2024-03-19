@@ -1,0 +1,20 @@
+https://discussions.apple.com/message/27529375#27529375
+=======================================================
+Xcode comes with LLVM and Clang, which you can use to compile C code.
+
+Choosing Xcode > Open Developer Tool > More Developer Tools in Xcode
+will take you to Apple's developer downloads site, where you can
+download the Command Line Tools for Xcode package. Make sure you
+download the package that matches your Xcode and OS X versions, as
+there are separate versions for Yosemite and Mavericks and separate
+versions for Xcode 6.1.1 and Xcode 6.1.
+
+-> I did that and downloaded Command Line Tools (OS X 10.9) Xcode -
+   Xcode 6.2
+
+This package enables UNIX-style development via Terminal by installing
+command line developer tools, as well as Mac OS X SDK frameworks and
+headers. Many useful tools are included, such as the Apple LLVM
+compiler, linker, and Make. If you use Xcode, these tools are also
+embedded within the Xcode IDE.
+

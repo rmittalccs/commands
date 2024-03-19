@@ -1,0 +1,95 @@
+from scipy import optimize
+
+# Define function for calculating a power law
+powerlaw = lambda x, amp, index: amp * (x**index)
+
+
+def var_lsf(df, var1, var2, var2err, message=None, kind=None, savefits=False, outliers=False, fig=True, savefig=False):
+    
+    ########### Outliers ######################
+    
+    if outliers:
+        df = groo(df, var1, var2)
+        
+    ########### Make the arrays ###############
+    
+    x_all = df[var1].to_numpy()
+    y_all = df[var2].to_numpy()
+    yerr_all = df[var2err].to_numpy()
+    
+    A = np.logical_and(np.isfinite(x_all), np.isfinite(y_all))
+    x = x_all[A].copy()
+    y = y_all[A].copy()
+    yerr = yerr_all[A].copy()
+    
+    xerr = np.full(len(x), 5)
+    cov = np.zeros_like(x)
+    
+    ####### Convert into Log Space #############
+    
+    logx = np.log(x)
+    logy = np.log(y)
+    logxerr = xerr/x
+    logyerr = yerr/y
+    
+    ########## Fits ####################################
+    
+    # Power-law fitting is best done by first converting
+    # to a linear equation and then fitting to a straight line.
+    # Note that the `logyerr` term here is ignoring a constant prefactor.
+    #
+    #  y = a * x^b
+    #  log(y) = log(a) + b*log(x)
+    #
+    
+    # define our (line) fitting function
+
+    #################
+    ### Method 1 ####
+    #################
+
+    fitfunc = lambda p, x: p[0] + p[1] * x
+    errfunc = lambda p, x, y, err: (y - fitfunc(p, x)) / err
+
+    pinit = [-0.3, 3]
+    out = optimize.leastsq(errfunc, pinit, args=(logx, logy, logyerr), full_output=1)
+
+    pfinal = out[0]
+    covar = out[1]
+
+    #################
+    ### Method 2 ####
+    #################
+
+    # fit data using SciPy's Levenberg-Marquart method
+    pfinal, covar = optimize.curve_fit(powerlaw, \
+                                             logx, logy, p0=[pinit[0], pinit[1]], sigma=logyerr)
+
+    #####################################################
+
+    index = pfinal[1]
+    amp = 10.0**pfinal[0]
+
+    indexErr = np.sqrt( covar[1][1] )
+    ampErr = np.sqrt( covar[0][0] ) * amp
+                
+    ########## Display Figure ###########################
+    
+    if fig:
+        plt.subplot(2, 1, 1)
+        plt.plot(x, powerlaw(x, amp, index))     # Fit
+        plt.errorbar(x, y, yerr=yerr, fmt='k.')  # Data
+        plt.text(5, 6.5, 'Ampli = %5.2f +/- %5.2f' % (amp, ampErr))
+        plt.text(5, 5.5, 'Index = %5.2f +/- %5.2f' % (index, indexErr))
+        plt.title('Best Fit Power Law')
+        plt.xlabel('X')
+        plt.ylabel('Y')
+        plt.xlim(1, 11)
+
+        plt.subplot(2, 1, 2)
+        plt.loglog(x, powerlaw(x, amp, index))
+        plt.errorbar(x, y, yerr=yerr, fmt='k.')  # Data
+        plt.xlabel('X (log scale)')
+        plt.ylabel('Y (log scale)')
+        plt.xlim(1.0, 11)
+        

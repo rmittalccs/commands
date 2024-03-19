@@ -1,0 +1,8 @@
+<database_uri>
+--------------
+postgresql://$MLFLOW_POSTGRES_USER:$MLFLOW_POSTGRES_PW@aiccrgoprdfe01.zod.comp.db.de/$MLFLOW_POSTGRES_DB
+
+
+reset mlflow
+------------
+mlflow db upgrade <database_uri>

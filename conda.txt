@@ -1,0 +1,39 @@
+AIC Conda Package Manager
+#########################
+
+/opt/miniforge/miniforge/envs/jupyterlab/bin/python /opt/miniforge/miniforge/envs/jupyterlab/bin/conda install -y -q --json -n asag awscli
+
+conda create --name venv2 --clone venv1
+
+conda env list
+
+conda create --prefix /home/rupalmittal/.conda/envs/cm_python37 -y python=3.7
+conda activate /home/rupalmittal/.conda/envs/cm_python37
+ipython kernel install --user --name cm_python37 --display-name "CMPYTHON37"
+conda install nb_conda
+conda install turbodbc
+conda install ipykernel
+
+
+New Package Installation
+########################
+
+cd ~/.local/share/jupyter/kernels
+rm -rf cm_python37/
+ipython kernel install --user --name cm_python37 --display-name "CMPYTHON37"
+
+Matplotlib
+###########
+
+After I installed matplotlib, pyarrow stopped working. I updated it
+and then it worked again.
+
+
+Conda Revisions
+###############
+
+conda list --revisions
+
+>>>You can revert to revision n by running
+
+conda install --revision n

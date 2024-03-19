@@ -1,0 +1,47 @@
+### Crop the Movie
+ffmpeg -i Earth-zoom-out-to-Universe.mp4 -ss 00:30 -t 02:30 -vcodec copy -acodec copy Earth-zoom-out-to-Universe-crop1.mp4
+
+### Get rid of the Audio from the Movie
+ffmpeg -i Earth-zoom-out-to-Universe-crop1.mp4 -c copy -an Earth-zoom-out-to-Universe-crop1-nosound.mp4
+
+
+### Crop the Music File
+ffmpeg -i Mozart-twinkle-twinkle-12-variations-piano.mp4 -ss 00:00 -t 02:30 -vcodec copy -acodec copy Mozart-twinkle-twinkle-12-variations-piano-crop.mp4
+
+
+### Extract the Music from the File
+ffmpeg -i Mozart-twinkle-twinkle-12-variations-piano-crop.mp4 -vn -acodec copy Mozart-twinkle-twinkle-12-variations-piano-crop.aac
+
+
+### Mix the Video and the Audio
+ffmpeg -i Earth-zoom-out-to-Universe-crop1-nosound.mp4 -i Mozart-twinkle-twinkle-12-variations-piano-crop.aac Earth-zoom-out-to-Universe-crop1-twinkle.mp4
+
+
+### Overlap the Video+Audio and the Audio
+ffmpeg \
+    -i video1.mp4 -i audio1.mp3 \
+    -c:v copy \
+    -filter_complex " \
+        [0:a][1:a] amix=inputs=2:duration=longest [audio_out] \
+        " \
+    -map 0:v -map "[audio_out]" \
+    -y output.mp4 
+
+### Overlap the Video+Audio/Voice and the Audio and adjust the volumn to emphasize the voice
+
+ffmpeg \
+    -i video1.mp4 -i audio1.mp3 \
+    -filter_complex " \
+        [0:a] volume=0.5 [music];
+        [music][1:a] amix=inputs=2:duration=longest [audio_out] \
+        " \
+    -map 0:v -map "[audio_out]" \
+    -y output.mp4 
+
+
+### Figure out the length of the Audio and Video
+ffprobe -i Earth-zoom-out-to-Universe-crop1-twinkle.mp4 -show_entries stream=codec_type,duration -of compact=p=0:nk=1
+
+
+### Fade away the Audio
+ffmpeg -i Earth-zoom-out-to-Universe-crop1-twinkle.mp4 -filter_complex "afade=d=0.5, areverse, afade=d=0.5, areverse" output.mp4

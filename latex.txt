@@ -1,0 +1,81 @@
+####################
+Running Minpage
+
+% \begin{tcolorbox}[
+%   blanker,
+%   width=0.36\textwidth,enlarge left by=0.64\textwidth,
+%   before skip=6pt,
+%   breakable,
+%   overlay unbroken and first={%
+%     \node[inner sep=0pt,outer sep=0pt,text width=0.60\textwidth,
+%       align=none,
+%       below right]
+%       at ([xshift=-0.64\textwidth]frame.north west)
+%   {%
+%     \textcolor{red}{Sidebar} %  <------------------------
+%     \lipsum[2]
+%   };}]
+% \textcolor{red}{Body}: %  <------------------------
+% \lipsum[3-7]
+% \textcolor{red}{End of body}
+% \end{tcolorbox}
+
+
+################# 
+To have the caption beside the figure
+
+\usepackage{floatrow}
+
+\begin{figure}
+\floatbox[{\capbeside\thisfloatsetup{capbesideposition={left,top},capbesidewidth=4cm}}]{figure}[\FBwidth]
+{\caption{A test figure with its caption side by side}\label{fig:test}}
+{\includegraphics[width=5cm]{name}}
+\end{figure}
+
+
+
+################# 
+To have a single set of equations labeled and numbered collectively:
+
+\begin{equation} \label{eq1}
+\begin{split}
+A & = \frac{\pi r^2}{2} \\
+ & = \frac{1}{2} \pi r^2
+\end{split}
+\end{equation}
+
+#################
+
+
+A strategy to have common footmarks:
+Text with first footnote\footnote{\label{note1}This is the labeled footnote}
+and more text with a second footnote\footnote{here}.
+
+In this a paragraph we have a reference to the first
+footnote\footnotemark[\ref{note1}].
+
+#################
+
+Example of a footnote in a figure:
+\addtocounter{footnote}{1}
+\begin{figure*}[t!]
+  \hspace*{-0.75cm}
+\begin{minipage}{0.499\textwidth}
+    \centering
+    \includegraphics[width=1.1\textwidth]{Lb-T4-cls.pdf}
+  \end{minipage}
+\begin{minipage}{0.499\textwidth}
+    \centering
+    \includegraphics[width=1.1\textwidth]{Lb-T4-cls-SCC-WCC-NCC.pdf}
+  \end{minipage}
+  \caption{\small $\lt$ relation for the $\hiflux$ sample of clusters.
+    \protect\footnotemark[\thefootnote]}
+  \label{LT}    
+\end{figure*}
+
+\footnotetext[\thefootnote]{The filled symbols represent clusters with
+  a central radio source and the open symbols represent those
+  without. The squares (blue), circles (green) and triangles (red)
+  represent strong cool-core clusters ($\ct <1$~Gyr), weak cool-core
+  clusters ($1$~Gyr $< \ct <7.7$~Gyr) and non-cool-core clusters ($\ct
+  >7.7$~Gyr), respectively.} 

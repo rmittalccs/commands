@@ -1,0 +1,9 @@
+Pandas Groupby and Histogram
+=============================
+
+dfp = df.merge(
+    df.groupby(["col1", "col2"]).size().reset_index().rename(columns={0: "size"}),
+        on=["col1", "col2"],
+	).set_index(df.index)
+
+px.bar(dfp, x=dfp.index, y="size", hover_data=["col1", "col2"])

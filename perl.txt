@@ -1,0 +1,3 @@
+perl -ane 'if ($F[6] & $F[7]) {print"@F[0..6] \n "}' td4min_table_1.txt | head -10
+
+perl -ane 'if ($F[6] eq "nan" & $F[7] eq "nan") {print ""} else {print "@F[0..7]\n"}' td4min_table_1.txt
