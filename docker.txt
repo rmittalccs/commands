@@ -1,0 +1,5 @@
+### Start a app in docker: cd into the folder with Dockerfile and docker-compose.yaml
+docker compose up -d --build
+
+### Stop the app
+docker compose stop
