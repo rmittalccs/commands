@@ -1,1 +1,2 @@
-
+### Run Streamlit on a different port
+streamlit run streamlit_app.py --server.port 8080
