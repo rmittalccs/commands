@@ -1,2 +1,13 @@
 ### Run Streamlit on a different port
+#####################################
 streamlit run streamlit_app.py --server.port 8080
+
+### Catch Standard Error and Output
+###################################
+#Run the script file  
+result = subprocess.Popen(['bash', 'run.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+stdout, stderr = result.communicate()
+
+# Display the terminal output
+st.text('\n'.join(stdout.decode().split('\n')[1:][:-1]))
+
