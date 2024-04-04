@@ -1,0 +1,7 @@
+### Install
+###########
+
+install.packages(c("magrittr", "dlpyr"))
+
+# Sometimes you have to specify the repo 
+install.packages('dplyr', repos = 'https://cloud.r-project.org')
