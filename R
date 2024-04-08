@@ -5,3 +5,16 @@ install.packages(c("magrittr", "dlpyr"))
 
 # Sometimes you have to specify the repo 
 install.packages('dplyr', repos = 'https://cloud.r-project.org')
+
+### Console Commands
+####################
+
+# Print the error encountered during tar_make()
+tar_meta(fields = error, complete_only = TRUE) 
+tar_meta(fields = error, complete_only = TRUE)$error
+
+# Print the variables created during tar_make
+tar_read(high_affinity_capacity_table) 
+
+# View them as a table
+tar_read(opportunity_analysis_data) |> View()  
