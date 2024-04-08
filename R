@@ -17,4 +17,10 @@ tar_meta(fields = error, complete_only = TRUE)$error
 tar_read(high_affinity_capacity_table) 
 
 # View them as a table
-tar_read(opportunity_analysis_data) |> View()  
+tar_read(opportunity_analysis_data) |> View()
+
+# View the column names of a dataframe
+print(names(tar_read(client_screening_data_raw)))
+
+# See the tar_make progress/network using graphics
+tar_visnetwork()
