@@ -175,12 +175,14 @@ Create a Virtual Python Environment
 ###################################
 
 1. python3 -m venv .venv 
+   python3 -m venv my-python3-kernel
 2. source .venv/bin/activate
 
 3. cd git/repository/
    pip install -r requirements.txt
 
-4. python -m ipykernel install --user --name="ddg"
+4. python -m ipykernel install --user --name=my-python3-kernel
+   python -m ipykernel install --user --name="ddg"
 
 
 Look inside a Python Object
