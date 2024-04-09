@@ -182,6 +182,7 @@ Create a Virtual Python Environment
    pip install -r requirements.txt
 
 4. python -m ipykernel install --user --name=my-python3-kernel
+   python -m ipykernel install --user --name cm_python37 --display-name "CMPYTHON37"
    python -m ipykernel install --user --name="ddg"
 
 
