@@ -1,0 +1,17 @@
+### Difference in regression coefficients of sklearn's LinearRegression and XGBRegressor ###
+############################################################################################
+https://stats.stackexchange.com/questions/448879/difference-in-regression-coefficients-of-sklearns-linearregression-and-xgbregre
+
+This answer will be somewhat anticlimactic but here goes...
+
+While indeed the linear booster is using a linear routine and not a tree-based routine as a base learner, most of the similarities between a GBM with a linear booster and a linear regression model end there.
+
+For starters, as you correctly note, within XGBoost we use (usually parallel) coordinate descent optimization instead of "standard" gradient descent. This will likely give us, different results. In addition to that, the learning rate, η
+, will itself regularise the estimates inadvertently so there is not direct analogy to "no regularisation" even if we assume reg_lambda, reg_lambda_bias and reg_alpha (weights L2, baseline L2 and weights L1 regularisation respectively) to equate to zero. Finally, an XGBoost model and a linear regression model will not have the same intercept, β0: while in the case of a standard linear regression the intercept is calculated as part of the overall design matrix X, the intercept used by XGBoost will depend on the learning rate, η
+
+as well as the mean of the response variable (i.e. we start boosting using as baseline the mean of our response variable or a regularised version of that mean to get our first estimates).
+
+I do not even touch on the case of multithreading multiple estimators because this concerns the reproducibility of your results and not their interpretation per se. I also do not examine the case of multiple iterations (n_estimators>1) as again, our estimates in this case might be affected by variation due to bagging. (Please note, that in the example code provided the subsample ratio of the training instances is set to 0.8, theoretically it should be set to 1 for the purposes of this comparison.) Finally, we should be aware that if we optimise for a sufficient large number of iterations, we will get the slope estimates that we would get from linear regression. After all, both XGBoost and LR will minimize the same cost function for the same data using the same slope estimates! :)
+
+And to address your final question: yes, the interpretation of the XGBoost slope coefficient β1
+as the "mean change in the response variable for one unit of change in the predictor variable while holding other predictors in the model constant." is correct. Putted differently: if two instances sA and sB only different by a unit change in a particular response variable x1 and are otherwise the same, the difference in our predictions for them will be the one quantified in the XGBoost β1 coefficient. Just the regularisation steps within XGBoost make the derivation of that intercept and slope coefficients totally incomparable with the derivation of the same intercept and slope coefficients within a linear regression framework.
