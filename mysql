@@ -1,3 +1,33 @@
+### VARCHAR 255 or 256
+######################
+
+https://dba.stackexchange.com/questions/183275/varchar255-or-varchar256
+
+DROP TABLE IF EXISTS dbo.V255_FULL;
+
+CREATE TABLE dbo.V255_FULL (
+    ID1 BIGINT NOT NULL,
+    ID2 BIGINT NOT NULL,
+    V255 VARCHAR(255)
+);
+
+INSERT INTO dbo.V255_FULL WITH (TABLOCK)
+SELECT TOP (500000) 0, 0, REPLICATE('A', 255)
+FROM master..spt_values t1
+CROSS JOIN master..spt_values t2;
+
+EXEC sp_spaceused 'V255_FULL';
+
+Results:
+
+╔═══════════╦══════════════════════╦═══════════╦═══════════╦════════════╦════════╗
+║   name    ║         rows         ║ reserved  ║   data    ║ index_size ║ unused ║
+╠═══════════╬══════════════════════╬═══════════╬═══════════╬════════════╬════════╣
+║ V255_FULL ║ 500000               ║ 143176 KB ║ 142888 KB ║ 8 KB       ║ 280 KB ║
+╚═══════════╩══════════════════════╩═══════════╩═══════════╩════════════╩════════╝
+
+
+
 ### Alter the VARCHAR length in a mysql database
 ################################################
 
