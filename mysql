@@ -1,4 +1,11 @@
-Increasing the string length from 32 to 64 characters for the suffix column in your MySQL database has some implications that you should consider:
+### Alter the VARCHAR length in a mysql database
+################################################
+
+ALTER TABLE `constituents` CHANGE `suffix` `suffix` VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL; 
+
+
+### Increasing the string length from 32 to 64 characters for the suffix column in your MySQL database has some implications that you should consider
+#####################################################################################################################################################
 
 Storage Space: Increasing the length of the suffix column will consume more storage space in your database. While this might not be a significant concern for small tables, it can add up if you have large datasets.
 
