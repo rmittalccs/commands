@@ -1,3 +1,9 @@
+PRINT COLUMN NAMES
+###################
+
+SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'constituents'
+
+
 CREAT A TABLE
 #############
 DECLARE @ListOWeekDays TABLE(DyNumber INT,DayAbb VARCHAR(40) , WeekName VARCHAR(40))
