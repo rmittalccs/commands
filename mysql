@@ -1,3 +1,19 @@
+### MYSQL COMMANDS
+##################
+
+### Enter MySQL
+mysql -u your_user -p
+
+### Let's see the list of locked tables
+mysql> show open tables where in_use>0;
+
+### Let's see the list of the current processes, one of them is locking your table(s)
+mysql> show full processlist;
+
+### Kill one of these processes
+mysql> kill <put_process_id_here>;
+
+
 ### VARCHAR 255 or 256
 ######################
 
