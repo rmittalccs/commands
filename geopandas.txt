@@ -1,0 +1,26 @@
+### Apply Different Border Widths
+#################################
+
+https://stackoverflow.com/questions/62691561/how-to-apply-different-border-widths-for-subregions-in-python-geopandas-chorople
+
+axs = ["ax1", "ax2"]
+vars = ["pop_est", "gdp_md_est"]
+fig, axs = plt.subplots(ncols=len(axs),
+                        figsize=(10, 10),
+                        sharex=True,
+                        sharey=True,
+                        constrained_layout=True)
+
+for ax, var in zip(axs, vars):
+
+    africa.plot(ax=ax,
+                column=var,
+                edgecolor="black",
+                missing_kwds={
+                    "color": "lightgrey",
+                    "hatch": "///"
+                })
+
+    ax.set_title(var)
+
+plt.show()
