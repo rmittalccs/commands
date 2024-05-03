@@ -1,3 +1,6 @@
+### Where do the volumes live on Windows?
+\\wsl.localhost\docker-desktop-data\mnt\wslg\distro\data\docker\volumes
+
 ### Start a app in docker: cd into the folder with Dockerfile and docker-compose.yaml
 docker compose up -d --build
 
