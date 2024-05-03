@@ -1,3 +1,8 @@
+### ALTER
+#########
+ALTER TABLE `tablename` ADD `new_col_name` INT NOT NULL DEFAULT 0;
+
+
 ### MYSQL COMMANDS
 ##################
 
