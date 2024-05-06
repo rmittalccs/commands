@@ -1,5 +1,8 @@
 ### CREATE NEW USERS AND GRANT THEM PRIVILEGES
 ##############################################
+
+https://www.digitalocean.com/community/tutorials/how-to-create-a-new-user-and-grant-permissions-in-mysql
+
 CREATE USER 'sammy'@'localhost' IDENTIFIED BY 'password';
 GRANT SELECT ON *.* TO 'ccsuser-r'@'172.31.89.134' WITH GRANT OPTION; -- for read-only
 
