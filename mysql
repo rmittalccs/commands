@@ -7,7 +7,10 @@ show variables like "%version%"
 
 https://www.digitalocean.com/community/tutorials/how-to-create-a-new-user-and-grant-permissions-in-mysql
 
+# Create new user
 CREATE USER 'sammy'@'localhost' IDENTIFIED BY 'password';
+
+# Grant permissions
 GRANT SELECT ON *.* TO 'ccsuser-r'@'172.31.89.134' WITH GRANT OPTION; -- for read-only
 GRANT INSERT, UPDATE, SELECT on *.* TO 'ccsuser-rw'@'172.31.89.134' WITH GRANT OPTION; -- for read/write-only
 
@@ -15,7 +18,9 @@ GRANT PRIVILEGE ON database.table TO 'username'@'host';
 GRANT SELECT ON *.* TO 'username'@'host_or_wildcard' IDENTIFIED BY 'password'; -- old mysql version
 GRANT CREATE, ALTER, DROP, INSERT, UPDATE, DELETE, SELECT, REFERENCES, RELOAD on *.* TO 'sammy'@'localhost' WITH GRANT OPTION; --new mysql version 
                                                                                                                                -- (without the password, with grant option)
-
+# Change user password
+ALTER USER 'ccsadmin'@'%' IDENTIFIED BY 'new_password';
+FLUSH PRIVILEGES;
 
 ### ALTER
 #########
