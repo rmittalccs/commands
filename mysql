@@ -4,8 +4,9 @@ CREATE USER 'sammy'@'localhost' IDENTIFIED BY 'password';
 GRANT SELECT ON *.* TO 'ccsuser-r'@'172.31.89.134' WITH GRANT OPTION; -- for read-only
 
 GRANT PRIVILEGE ON database.table TO 'username'@'host';
-GRANT SELECT ON *.* TO 'username'@'host_or_wildcard' IDENTIFIED BY 'password';
-GRANT CREATE, ALTER, DROP, INSERT, UPDATE, DELETE, SELECT, REFERENCES, RELOAD on *.* TO 'sammy'@'localhost' WITH GRANT OPTION;
+GRANT SELECT ON *.* TO 'username'@'host_or_wildcard' IDENTIFIED BY 'password'; -- old mysql version
+GRANT CREATE, ALTER, DROP, INSERT, UPDATE, DELETE, SELECT, REFERENCES, RELOAD on *.* TO 'sammy'@'localhost' WITH GRANT OPTION; --new mysql version 
+                                                                                                                               -- (without the password, with grant option)
 
 
 ### ALTER
