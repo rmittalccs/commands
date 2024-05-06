@@ -1,3 +1,11 @@
+### CREATE NEW USERS AND GRANT THEM PRIVILEGES
+##############################################
+CREATE USER 'sammy'@'localhost' IDENTIFIED BY 'password';
+GRANT PRIVILEGE ON database.table TO 'username'@'host';
+GRANT SELECT ON *.* TO 'username'@'host_or_wildcard' IDENTIFIED BY 'password';
+GRANT CREATE, ALTER, DROP, INSERT, UPDATE, DELETE, SELECT, REFERENCES, RELOAD on *.* TO 'sammy'@'localhost' WITH GRANT OPTION;
+
+
 ### ALTER
 #########
 ALTER TABLE `tablename` ADD `new_col_name` INT NOT NULL DEFAULT 0;
