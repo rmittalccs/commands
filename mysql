@@ -1,6 +1,8 @@
 ### CREATE NEW USERS AND GRANT THEM PRIVILEGES
 ##############################################
 CREATE USER 'sammy'@'localhost' IDENTIFIED BY 'password';
+GRANT SELECT ON *.* TO 'ccsuser-r'@'172.31.89.134' WITH GRANT OPTION; -- for read-only
+
 GRANT PRIVILEGE ON database.table TO 'username'@'host';
 GRANT SELECT ON *.* TO 'username'@'host_or_wildcard' IDENTIFIED BY 'password';
 GRANT CREATE, ALTER, DROP, INSERT, UPDATE, DELETE, SELECT, REFERENCES, RELOAD on *.* TO 'sammy'@'localhost' WITH GRANT OPTION;
