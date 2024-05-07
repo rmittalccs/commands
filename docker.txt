@@ -1,3 +1,7 @@
+### Restart a container
+#######################
+docker start -ai container_name
+
 ### Removing all the containers
 docker rm $(docker ps -a -q)
 docker volume prune -f
