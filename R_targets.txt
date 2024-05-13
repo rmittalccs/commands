@@ -1,0 +1,18 @@
+Watch a file on disk for changes
+################################
+  
+```
+list(
+  tar_target(watch_new_data, "data/new_data.rda", format = "file"),
+  tar_target(use_new_data, read_from_path(watch_new_data))
+)
+```
+where read_from_path() is a function that takes a file path as its argument, and returns the associated object:
+
+```
+read_from_path <- function (path) {
+  envir <- environment()
+  data_name <- load(path, envir = envir)
+  get(data_name)
+}
+```
