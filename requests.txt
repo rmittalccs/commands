@@ -1,0 +1,15 @@
+### How to POST JSON data with Python Requests?
+https://stackoverflow.com/questions/9733638/how-to-post-json-data-with-python-requests
+
+Which parameter between data / json / files you need to use depends on a request header named Content-Type (you can check this through the developer tools of your browser).
+
+When the Content-Type is application/x-www-form-urlencoded, use data=:
+requests.post(url, data=json_obj)
+
+When the Content-Type is application/json, you can either just use json= or use data= and set the Content-Type yourself:
+requests.post(url, json=json_obj)
+requests.post(url, data=jsonstr, headers={"Content-Type":"application/json"})
+
+When the Content-Type is multipart/form-data, it's used to upload files, so use files=:
+requests.post(url, files=xxxx)
+
