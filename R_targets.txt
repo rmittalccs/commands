@@ -1,6 +1,8 @@
 Watch a file on disk for changes
 ################################
-  
+
+https://github.com/ropensci/targets/discussions/598
+
 ```
 list(
   tar_target(watch_new_data, "data/new_data.rda", format = "file"),
