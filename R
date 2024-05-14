@@ -1,3 +1,7 @@
+### Restart R
+#############
+.rs.restartR()
+
 ### Install
 ###########
 
