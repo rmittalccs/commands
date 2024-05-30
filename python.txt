@@ -1,3 +1,8 @@
+### Random seed based on time
+#############################
+from datetime import datetime
+random.seed(datetime.now().timestamp())
+
 ### Cycle Through Colors
 ########################
 import numpy as np
