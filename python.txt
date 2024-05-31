@@ -3,6 +3,13 @@
 from datetime import datetime
 random.seed(datetime.now().timestamp())
 
+### Random numbers
+##################
+x = random.randint(1e+07, size=int(1e+5))
+
+b = 1e+6
+x = b - np.random.random_sample(100000) * b
+
 ### Cycle Through Colors
 ########################
 import numpy as np
