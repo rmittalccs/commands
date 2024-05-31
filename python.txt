@@ -289,6 +289,20 @@ globals()[dvar_output[j]] = np.concatenate(([np.NaN], sum_err), axis=0)
 Example of Sub-Plots
 ####################
 
+### Concise Example for (m,n)
+n = int(np.ceil(len(xcol_rfecv_xgb)/3))
+print(n)
+fig, axs = plt.subplots(n, 3, figsize=(10, 6), layout='constrained')
+
+for ax, feature in zip(axs.flat, xcol_rfecv_xgb):
+    print(ax, feature)
+
+    ax.figure(figsize=(4, 4))
+    ax.scatter(y_train, X_train[feature], color='blue', alpha=0.5, s=0.3)
+    ax.xlabel("%s_train" %feature)
+    ax.ylabel("y_train")
+    ax.title('y_train vs %s' %feature)
+
 ### SubPlots Example
 fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(16, 8))
 for m in range(nrows):
