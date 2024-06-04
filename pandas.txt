@@ -1,3 +1,8 @@
+Search for a string across the entire dataframe
+################################################
+df[df.apply(lambda row: row.astype(str).str.contains("TEST").any(), axis=1)]
+
+
 Drop Multiple-Index Data
 ########################
 df_tmp = df_tmp.drop(index=(lat_next, lon_next, pt_idx))
