@@ -342,6 +342,10 @@ df.query("X == 2 and Z == 2")['Y'].sum()
 df.loc[(df['X'] == 2) & (df['Z'] == 2), 'Y'].sum()
 
 
+df_3[(df_3["is_assigned"]==False) & \
+     (df_3[columns_solicitor_name].apply(lambda col: col.str.contains("Lawrence", case=False)).any(axis=1))]
+
+
 EXAMPLE WITH OR
 ################
 
