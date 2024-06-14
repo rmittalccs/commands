@@ -1,3 +1,15 @@
+Sample Data Randomly
+####################
+import pandas
+import random
+
+n = 1000000 #number of records in file
+s = 10000 #desired sample size
+filename = "data.txt"
+skip = sorted(random.sample(range(n),n-s))
+df = pandas.read_csv(filename, skiprows=skip)
+
+
 Search for a string across the entire dataframe
 ################################################
 df[df.apply(lambda row: row.astype(str).str.contains("TEST").any(), axis=1)]
