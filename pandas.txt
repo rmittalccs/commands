@@ -10,9 +10,13 @@ skip = sorted(random.sample(range(n),n-s))
 df = pandas.read_csv(filename, skiprows=skip)
 
 
-Search for a string across the entire dataframe
-################################################
+Search for a string/s across the entire dataframe
+#################################################
 df[df.apply(lambda row: row.astype(str).str.contains("TEST").any(), axis=1)]
+
+df[df["Last/First Name"]\
+.apply(lambda sentence: all(word in sentence for word in ["Elisabeth", "Gasparka"]))]\
+.head(2)
 
 
 Drop Multiple-Index Data
