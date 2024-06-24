@@ -3,17 +3,26 @@
 docker start -ai container_name
 
 ### Removing all the containers
+###############################
 docker rm $(docker ps -a -q)
 docker volume prune -f
 
 This is because without cleaning up the containers (yes, the ones marked exited), not all of the volumes will be pruned. And if you don't prune all of the volumes, the db will persist from the prior instance. This was confusing because containers are thought of as isolated instances, but not if the volumes are persisting between them.
 
-
 ### Where do the volumes live on Windows?
+#########################################
 \\wsl.localhost\docker-desktop-data\mnt\wslg\distro\data\docker\volumes
 
-### Start a app in docker: cd into the folder with Dockerfile and docker-compose.yaml
+### Start a app in docker 
+#########################
+cd into the folder with Dockerfile and docker-compose.yaml
+
+docker volume create --name app_data_raw 
+docker volume create --name app_data_processed 
+docker volume create --name app_data_logs 
+
 docker compose up -d --build
 
 ### Stop the app
+################
 docker compose stop
