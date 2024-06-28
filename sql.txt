@@ -1,3 +1,7 @@
+ALTER THE ORDER OF COLUMNS
+##########################
+ALTER TABLE table_name MODIFY password varchar(20) AFTER id
+
 PRINT COLUMN NAMES
 ###################
 
