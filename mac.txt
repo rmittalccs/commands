@@ -1,7 +1,13 @@
-Hi,
+### Change shell
+Type in Terminal:
+```
+chsh -s /bin/csh
+```
+Restart Terminal
 
-Open a Terminal and type in
-
+### Hidden Files
+Type in Terminal
+```
 defaults write com.apple.finder AppleShowAllFiles true
-
+```
 then restart your Finder (i.e. log out or force-restart it using Alt-Option-Esc). The hidden files are now shown. To undo this just use false at the end of the command and repeat.
