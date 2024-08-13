@@ -1,0 +1,5 @@
+# Replace String in Files
+
+foreach f ( `ls *pred_mod*` )
+  mv $f `echo $f | sed 's/_pred_mod//'`
+end
