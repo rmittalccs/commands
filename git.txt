@@ -1,3 +1,22 @@
+#############
+Git diff tool
+#############
+
+An additional way to do that (from the command line):
+
+git config --global diff.tool tkdiff
+git config --global merge.tool tkdiff
+git config --global --add difftool.prompt false
+
+The first two lines will set the difftool and mergetool to tkdiff- change that according to your preferences. The third line disables the 
+annoying prompt so whenever you hit git difftool it will automatically launch the difftool.
+
+# to see the SHA1 commit you're trying to diff
+git log 
+# Say you want to see the commit with the SHA1 abc123
+git difftool abc123~1 abc123
+
+
 ########################################################
 Check what credentials git is using for a particular url
 #########################################################
