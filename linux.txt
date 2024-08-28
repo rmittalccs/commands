@@ -1,6 +1,11 @@
+Count unique values in the first column of a file:
+cut -d '|' -f 1 file.txt | sort | uniq
+
+Count how many unique values:
+cut -d '|' -f 1 file.txt | sort | uniq | wc -l
+
 Count files in subdirectories
 du -a | cut -d/ -f2 | sort | uniq -c | sort -nr
-
 
 Find empty directories:
 find */dd/*.inmove/ -type d -empty
