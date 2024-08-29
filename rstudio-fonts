@@ -1,4 +1,29 @@
-To get RStudio to recognize the Karla fonts installed on your Mac, you can follow these steps:
+### Simple Commands to Explore Fonts
+#####################################
+
+systemfonts::system_fonts() %>% dplyr::filter(grepl("Karla", name))
+systemfonts::system_fonts() %>% dplyr::filter(grepl("Karla", name)) %>% pull(name)
+
+### Try it out
+##############
+
+library(ggplot2)
+
+trees |>
+    ggplot(aes(x = Girth, 
+               y = Height,
+               size = Volume,
+               colour = Volume)) +
+    geom_point() +
+    labs(title = "Did the font work? Let's hope so!",
+         subtitle = "If it did, your plot should look the same as this.") +
+    theme_minimal() +
+    theme(text = element_text(family = "Karla"),
+          legend.position = "none")
+
+
+### To get RStudio to recognize the Karla fonts installed on your Mac, you can follow these steps
+#################################################################################################
 
 1. Install and Load Necessary Packages
 
