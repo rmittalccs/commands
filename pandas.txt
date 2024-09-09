@@ -1,3 +1,9 @@
+Explore Excel Sheets
+####################
+excel_file = pd.ExcelFile(file)
+sheet_names = excel_file.sheet_names
+sheet_names
+
 Subplots
 #########
 
