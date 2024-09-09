@@ -1,3 +1,13 @@
+Subplots
+#########
+
+categorical_features = ["colour", "direction"]
+fig, ax = plt.subplots(1, len(categorical_features))
+for i, categorical_feature in enumerate(df[categorical_features]):
+    df[categorical_feature].value_counts().plot("bar", ax=ax[i]).set_title(categorical_feature)
+fig.show()
+
+
 Sample Data Randomly
 ####################
 import pandas
