@@ -1,3 +1,6 @@
+Omit a pattern (matrix_all):
+sed 's/\[[^]]*\]//g' filename
+
 Count unique values in the first column of a file:
 cut -d '|' -f 1 file.txt | sort | uniq
 
