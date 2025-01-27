@@ -1,0 +1,4 @@
+GRANT USAGE, CREATE ON SCHEMA ccs_civis TO GROUP CCS
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE ccs_civis.ccs_civis_constituents_preprocessed_v1 TO GROUP CCS;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE ccs_civis.ccs_civis_gifts_preprocessed_v1 TO GROUP CCS;
