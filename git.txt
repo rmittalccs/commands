@@ -1,3 +1,8 @@
+############################
+Git Clean up Remote Branches
+############################
+git remote prune origin
+
 #######################
 Git Create Empty Branch
 #######################
