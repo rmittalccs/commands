@@ -1,3 +1,13 @@
+### Python Env
+##############
+library(reticulate)
+use_virtualenv("~/.virtualenvs/.py39_scikit", required = TRUE)
+py_install("pandas", envname = "~/.virtualenvs/.py39_scikit")
+py_config()
+
+virtualenv_root()
+virtualenv_list()
+
 ### Restart R
 #############
 .rs.restartR()
