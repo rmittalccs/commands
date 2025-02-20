@@ -1,3 +1,11 @@
+##########
+Git Revert
+##########
+git revert -m 1 <merge_commit_hash>
+
+# To ignore any local changes since the merge
+git reset --hard
+
 ############################
 Git Clean up Remote Branches
 ############################
